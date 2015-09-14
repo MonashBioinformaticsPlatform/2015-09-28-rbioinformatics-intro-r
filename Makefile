@@ -45,7 +45,7 @@ clean :
 preview : $(DST_ALL) data.zip
 
 # Pattern to build a generic page.
-%.html : %.md _layouts/page.html $(FILTERS)
+%.html : %.md _layouts/page.html _includes/*.html $(FILTERS)
 	${PANDOC} -s -t html \
 	    ${PANDOC_FLAGS} \
 	    --template=_layouts/page \
