@@ -1,0 +1,126 @@
+---
+layout: page
+title: Programming with R
+subtitle: Welcome to R, let's analyze some data
+minutes: 30
+---
+
+```{r, include = FALSE}
+source("tools/chunk-options.R")
+opts_chunk$set(fig.path = "fig/M1-start-")
+```
+
+# Welcome to R
+
+# Loading data
+
+Our example data is quality measurements (particle size) on some PVC plastic production, using eight different resin batches, and three different machine operators.
+
+```{r, results="hide"}
+read.csv(file="data/pvc.csv", row.names=1)
+```
+
+```{r, results="hide"}
+dat <- read.csv(file="data/pvc.csv", row.names=1)
+```
+
+```{r}
+dat
+class(dat)
+str(dat)
+```
+
+`read.csv` has loaded the data as a data frame, but actually it is a matrix. In a data frame the columns contain different types of data, but in a matrix all the elements are the same type of data. A data frame contains a collection of "things" (rows) each with a set of properties (columns) of different types. A matrix in R is like a mathematical matrix, containing all the same type of thing (usually numbers).
+
+R often but not always lets these be used interchangably. Let us insist to R that what we have is a matrix.
+
+```{r}
+mat <- as.matrix(dat)
+class(mat)
+```
+
+Much better.
+
+
+# A t-test or two
+
+```{r}
+mat[1,]
+mat[2,]
+t.test(mat[1,], mat[2,])
+```
+
+Actually, this can be considered a paired sample t-test.
+
+```{r}
+t.test(mat[1,], mat[2,], paired=TRUE)
+```
+
+> ## Challenge - using t.test {.challenge}
+>
+> Can you find a significant difference between any two resins?
+
+
+When we call t.test it returns an object that behaves like a `list`. Recall that in R a `list` is a miscellaneous collection of data.
+
+```{r}
+result <- t.test(mat[1,], mat[2,], paired=TRUE)
+names(result)
+result$p.value
+```
+
+This means we can write software that uses the various results from t-test, for example performing a whole lot of t-tests and reporting the significant results.
+
+
+# A proper example of a data frame
+
+Instead of storing this data in a matrix, we could store each measurement in a row of a data frame. We can convert to this "long" form with the `melt` function in the library `reshape2`.
+
+```{r}
+library(reshape2)
+long <- melt(mat)
+head(long)
+colnames(long) <- c("resin","operator","value")
+head(long)
+````
+
+This long form is often the best form for exploration and statistical testing of data.
+
+R has a built in plotting facility, with functions like `plot`.
+
+A more recent and much more powerful plotting library is `ggplot2`. The syntax is a little strange, but there are plenty of examples in the online documentation.
+
+If `ggplot2` isn't already installed, we need to install it.
+
+```{r, eval=FALSE}
+install.packages("ggplot2")
+```
+
+```{r, echo=FALSE}
+library(ggplot2)
+```
+
+A simple example:
+
+```{r}
+ggplot(long, aes(x=operator, y=value)) + geom_point()
+```
+
+The call to `ggplot` sets up the basics of how we are going to represent the various columns of the data frame. We then literally add layers of graphics to this.
+
+```{r}
+ggplot(long, aes(x=operator, y=value)) + geom_boxplot() + geom_point()
+ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) + geom_line()
+```
+
+This long form is also ideal for statistical testing. Here is a one-way ANOVA.
+
+```{r}
+oneway.test(value ~ resin, data=long)
+```
+
+A two-way ANOVA analysis would be better here. This is *well* beyond the scope of this course, but could be achived with something like:
+
+```{r}
+anova(lm(value ~ resin + operator, data=long))
+```

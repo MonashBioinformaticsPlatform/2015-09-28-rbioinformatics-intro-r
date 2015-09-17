@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Programming with R</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        Class notes derived from the <a href="http://software-carpentry.org">Software Carpentry</a> R course.
+        <!--
+        We don't qualify as a Software Carpentry course, so don't show logo.
+      
+        <a href="http://software-carpentry.org" title="Software Carpentry">
+          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        </a>
+        -->
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+                    <a href="index.html"><h1 class="title">Programming with R</h1></a>
+          <h2 class="subtitle">Welcome to R, let’s analyze some data</h2>
+          <h1 id="welcome-to-r">Welcome to R</h1>
+<h1 id="loading-data">Loading data</h1>
+<p>Our example data is quality measurements (particle size) on some PVC plastic production, using eight different resin batches, and three different machine operators.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/pvc.csv&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/pvc.csv&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">dat</code></pre>
+<pre class="output"><code>       Alice   Bob  Carl
+Resin1 36.25 35.40 35.30
+Resin2 35.15 35.35 33.35
+Resin3 30.70 29.65 29.20
+Resin4 29.70 30.05 28.65
+Resin5 31.85 31.40 29.30
+Resin6 30.20 30.65 29.75
+Resin7 32.90 32.50 32.80
+Resin8 36.80 36.45 33.15
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(dat)</code></pre>
+<pre class="output"><code>[1] &quot;data.frame&quot;
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(dat)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   8 obs. of  3 variables:
+ $ Alice: num  36.2 35.1 30.7 29.7 31.9 ...
+ $ Bob  : num  35.4 35.4 29.6 30.1 31.4 ...
+ $ Carl : num  35.3 33.4 29.2 28.6 29.3 ...
+</code></pre>
+<p><code>read.csv</code> has loaded the data as a data frame, but actually it is a matrix. In a data frame the columns contain different types of data, but in a matrix all the elements are the same type of data. A data frame contains a collection of “things” (rows) each with a set of properties (columns) of different types. A matrix in R is like a mathematical matrix, containing all the same type of thing (usually numbers).</p>
+<p>R often but not always lets these be used interchangably. Let us insist to R that what we have is a matrix.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(dat)
+<span class="kw">class</span>(mat)</code></pre>
+<pre class="output"><code>[1] &quot;matrix&quot;
+</code></pre>
+<p>Much better.</p>
+<h1 id="a-t-test-or-two">A t-test or two</h1>
+<pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">1</span>,]</code></pre>
+<pre class="output"><code>Alice   Bob  Carl 
+36.25 35.40 35.30 
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">2</span>,]</code></pre>
+<pre class="output"><code>Alice   Bob  Carl 
+35.15 35.35 33.35 
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(mat[<span class="dv">1</span>,], mat[<span class="dv">2</span>,])</code></pre>
+<pre class="output"><code>
+    Welch Two Sample t-test
+
+data:  mat[1, ] and mat[2, ]
+t = 1.4683, df = 2.855, p-value = 0.2427
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.271985  3.338652
+sample estimates:
+mean of x mean of y 
+ 35.65000  34.61667 
+</code></pre>
+<p>Actually, this can be considered a paired sample t-test.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(mat[<span class="dv">1</span>,], mat[<span class="dv">2</span>,], <span class="dt">paired=</span><span class="ot">TRUE</span>)</code></pre>
+<pre class="output"><code>
+    Paired t-test
+
+data:  mat[1, ] and mat[2, ]
+t = 1.8805, df = 2, p-value = 0.2008
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.330952  3.397618
+sample estimates:
+mean of the differences 
+               1.033333 
+</code></pre>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge - using t.test</h2>
+</div>
+<div class="panel-body">
+<p>Can you find a significant difference between any two resins?</p>
+</div>
+</section>
+<p>When we call t.test it returns an object that behaves like a <code>list</code>. Recall that in R a <code>list</code> is a miscellaneous collection of data.</p>
+<pre class="sourceCode r"><code class="sourceCode r">result &lt;-<span class="st"> </span><span class="kw">t.test</span>(mat[<span class="dv">1</span>,], mat[<span class="dv">2</span>,], <span class="dt">paired=</span><span class="ot">TRUE</span>)
+<span class="kw">names</span>(result)</code></pre>
+<pre class="output"><code>[1] &quot;statistic&quot;   &quot;parameter&quot;   &quot;p.value&quot;     &quot;conf.int&quot;    &quot;estimate&quot;   
+[6] &quot;null.value&quot;  &quot;alternative&quot; &quot;method&quot;      &quot;data.name&quot;  
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">result$p.value</code></pre>
+<pre class="output"><code>[1] 0.2007814
+</code></pre>
+<p>This means we can write software that uses the various results from t-test, for example performing a whole lot of t-tests and reporting the significant results.</p>
+<h1 id="a-proper-example-of-a-data-frame">A proper example of a data frame</h1>
+<p>Instead of storing this data in a matrix, we could store each measurement in a row of a data frame. We can convert to this “long” form with the <code>melt</code> function in the library <code>reshape2</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(reshape2)
+long &lt;-<span class="st"> </span><span class="kw">melt</span>(mat)
+<span class="kw">head</span>(long)</code></pre>
+<pre class="output"><code>    Var1  Var2 value
+1 Resin1 Alice 36.25
+2 Resin2 Alice 35.15
+3 Resin3 Alice 30.70
+4 Resin4 Alice 29.70
+5 Resin5 Alice 31.85
+6 Resin6 Alice 30.20
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(long) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;resin&quot;</span>,<span class="st">&quot;operator&quot;</span>,<span class="st">&quot;value&quot;</span>)
+<span class="kw">head</span>(long)</code></pre>
+<pre class="output"><code>   resin operator value
+1 Resin1    Alice 36.25
+2 Resin2    Alice 35.15
+3 Resin3    Alice 30.70
+4 Resin4    Alice 29.70
+5 Resin5    Alice 31.85
+6 Resin6    Alice 30.20
+</code></pre>
+<p>This long form is often the best form for exploration and statistical testing of data.</p>
+<p>R has a built in plotting facility, with functions like <code>plot</code>.</p>
+<p>A more recent and much more powerful plotting library is <code>ggplot2</code>. The syntax is a little strange, but there are plenty of examples in the online documentation.</p>
+<p>If <code>ggplot2</code> isn’t already installed, we need to install it.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</code></pre>
+<pre class="output"><code>Loading required package: methods
+</code></pre>
+<p>A simple example:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="fig/M1-start-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" /></p>
+<p>The call to <code>ggplot</code> sets up the basics of how we are going to represent the various columns of the data frame. We then literally add layers of graphics to this.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="fig/M1-start-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value, <span class="dt">group=</span>resin, <span class="dt">color=</span>resin)) +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre>
+<p><img src="fig/M1-start-unnamed-chunk-13-2.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" /></p>
+<p>This long form is also ideal for statistical testing. Here is a one-way ANOVA.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">oneway.test</span>(value ~<span class="st"> </span>resin, <span class="dt">data=</span>long)</code></pre>
+<pre class="output"><code>
+    One-way analysis of means (not assuming equal variances)
+
+data:  value and resin
+F = 26.6047, num df = 7.000, denom df = 6.537, p-value = 0.0002445
+</code></pre>
+<p>A two-way ANOVA analysis would be better here. This is <em>well</em> beyond the scope of this course, but could be achived with something like:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(<span class="kw">lm</span>(value ~<span class="st"> </span>resin +<span class="st"> </span>operator, <span class="dt">data=</span>long))</code></pre>
+<pre class="output"><code>Analysis of Variance Table
+
+Response: value
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+resin      7 141.973 20.2818  39.615 3.599e-08 ***
+operator   2  10.359  5.1795  10.117  0.001913 ** 
+Residuals 14   7.168  0.5120                      
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+</code></pre>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/r-novice-inflammation">Source</a>
+        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+  </body>
+</html>

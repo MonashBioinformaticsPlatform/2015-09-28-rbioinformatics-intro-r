@@ -36,6 +36,8 @@ and to use that language *well*.
 
 ## Topics
 
+M1. [Introducing R, analyzing data](M1-start.html)
+
 1.  [Analyzing patient data](01-starting-with-data.html)
 2.  [Creating functions](02-func-R.html)
 3.  [Analyzing multiple data sets](03-loops-R.html)
