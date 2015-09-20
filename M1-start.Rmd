@@ -432,9 +432,7 @@ head(long)
 
 This long form is often the best form for exploration and statistical testing of data.
 
-R has a built in plotting facility, with functions like `plot`.
-
-A more recent and much more powerful plotting library is `ggplot2`. The syntax is a little strange, but there are plenty of examples in the online documentation.
+We already saw some of R's built in plotting facilities with the function `plot`. A more recent and much more powerful plotting library is `ggplot2`. The syntax is a little strange, but there are plenty of examples in the [online documentation](http://docs.ggplot2.org/current/).
 
 If `ggplot2` isn't already installed, we need to install it.
 
