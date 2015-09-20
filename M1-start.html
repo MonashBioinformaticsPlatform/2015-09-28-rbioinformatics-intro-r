@@ -33,10 +33,120 @@
         <div class="col-md-10 col-md-offset-1">
                     <a href="index.html"><h1 class="title">Programming with R</h1></a>
           <h2 class="subtitle">Welcome to R, let’s analyze some data</h2>
-          <h1 id="welcome-to-r">Welcome to R</h1>
-<h1 id="loading-data">Loading data</h1>
+          <section class="objectives panel panel-warning">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li>Use R as a calculator.</li>
+<li>Assign values to variables.</li>
+<li>Read tabular data from a file.</li>
+<li>Select individual values and subsections from data.</li>
+<li>Perform operations on data.</li>
+<li>Display graphs.</li>
+</ul>
+</div>
+</section>
+<h1 id="welcome-to-r">Welcome to R</h1>
+<p>We will be working in RStudio.</p>
+<p>Open RStudio, click on the “Console” pane, type <code>1+1</code> and press enter. R displays the result of the calculation.</p>
+<p><code>*</code> has higher precedence than <code>+</code>. We can use brackets if necessary <code>( )</code>. Try <code>1+2*3</code> and <code>(1+2)*3</code>.</p>
+<p>Spaces can be used to make code easier to read.</p>
+<p>We can compare with <code>&lt; &gt; &lt;= &gt;=</code>. This produces a “logical” value, <code>TRUE</code> or <code>FALSE</code>.</p>
+<h2 id="variables">Variables</h2>
+<p>A variable is a name for a value, such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. We can create a new variable by assigning a value to it using <code>&lt;-</code></p>
+<pre class="sourceCode r"><code class="sourceCode r">weight_kg &lt;-<span class="st"> </span><span class="dv">55</span></code></pre>
+<p>RStudio helpfully shows us the variable in the “Environment” pane. We can also print it by typing the name of the variable and hitting <code>Enter</code> (or <code>return</code>). In general, R will print to the console any object returned by a function or operation <em>unless</em> we assign it to a variable.</p>
+<pre class="sourceCode r"><code class="sourceCode r">weight_kg</code></pre>
+<pre class="output"><code>[1] 55
+</code></pre>
+<p>Examples of valid variables names: <code>hello</code>, <code>hello_there</code>, <code>hello.there</code>, <code>value1</code>. Spaces aren’t ok <em>inside</em> variable names. Dots (<code>.</code>) are ok, unlike in many other languages.</p>
+<p>We can do arithmetic with the variable:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># weight in pounds:</span>
+<span class="fl">2.2</span> *<span class="st"> </span>weight_kg</code></pre>
+<pre class="output"><code>[1] 121
+</code></pre>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+</div>
+<div class="panel-body">
+<p>We can add comments to our code using the <code>#</code> character. It is useful to document our code in this way so that others (and us the next time we read it) have an easier time following what the code is doing.</p>
+</div>
+</aside>
+<p>We can also change an object’s value by assigning it a new value:</p>
+<pre class="sourceCode r"><code class="sourceCode r">weight_kg &lt;-<span class="st"> </span><span class="fl">57.5</span>
+<span class="co"># weight in kilograms is now</span>
+weight_kg</code></pre>
+<pre class="output"><code>[1] 57.5
+</code></pre>
+<p>If we imagine the variable as a sticky note with a name written on it, assignment is like putting the sticky note on a particular value:</p>
+<p><img src="fig/python-sticky-note-variables-01.svg" alt="Variables as Sticky Notes" /></p>
+<p>This means that assigning a value to one object does not change the values of other variables. For example, let’s store the subject’s weight in pounds in a variable:</p>
+<pre class="sourceCode r"><code class="sourceCode r">weight_lb &lt;-<span class="st"> </span><span class="fl">2.2</span> *<span class="st"> </span>weight_kg
+<span class="co"># weight in kg...</span>
+weight_kg</code></pre>
+<pre class="output"><code>[1] 57.5
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ...and in pounds</span>
+weight_lb</code></pre>
+<pre class="output"><code>[1] 126.5
+</code></pre>
+<p><img src="fig/python-sticky-note-variables-02.svg" alt="Creating Another Variable" /></p>
+<p>and then change <code>weight_kg</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">weight_kg &lt;-<span class="st"> </span><span class="fl">100.0</span>
+<span class="co"># weight in kg now...</span>
+weight_kg</code></pre>
+<pre class="output"><code>[1] 100
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ...and weight in pounds still</span>
+weight_lb</code></pre>
+<pre class="output"><code>[1] 126.5
+</code></pre>
+<p><img src="fig/python-sticky-note-variables-03.svg" alt="Updating a Variable" /></p>
+<p>Since <code>weight_lb</code> doesn’t “remember” where its value came from, it isn’t automatically updated when <code>weight_kg</code> changes. This is different from the way spreadsheets work.</p>
+<h2 id="vectors">Vectors</h2>
+<p>We can make vectors with <code>c( )</code>, for example <code>c(1,2,3)</code>, and do maths to them. <code>c</code> means “combine”. Actually in R, values are just vectors of length one. R is obsesssed with vectors.</p>
+<pre class="sourceCode r"><code class="sourceCode r">myvec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)
+myvec +<span class="st"> </span><span class="dv">1</span></code></pre>
+<pre class="output"><code>[1] 2 3 4
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">myvec +<span class="st"> </span>myvec</code></pre>
+<pre class="output"><code>[1] 2 4 6
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dv">10</span>, myvec)</code></pre>
+<pre class="output"><code>[1] 10  1  2  3
+</code></pre>
+<p>Access elements of a vector with <code>[ ]</code>, for example <code>myvec[1]</code>.</p>
+<p>We will also encounter character strings, for example <code>&quot;hello&quot;</code>. R also has something called “factors”, which are categorical vectors, and behave very much like character vectors (think the factors in an experiment). R likes turning character vectors into factors, which is usually fine.</p>
+<p>R has various functions, such as <code>sum( )</code>. We can get help on a function with, eg <code>?sum</code>. Because R is a language for statistics, it has many built in statistics-related functions. We will also be loading more specialized functions from “libraries”.</p>
+<h2 id="lists">Lists</h2>
+<p>Vectors contain all the same kind of thing. Try <code>c(42, &quot;hello&quot;)</code>. Lists can contain different kinds of thing.</p>
+<p>We generally gives the things in a list names. Try <code>list(num=42, greeting=&quot;hello&quot;)</code>. To access named elements we use <code>$</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mylist &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">num=</span><span class="dv">42</span>, <span class="dt">greeting=</span><span class="st">&quot;Hello, world&quot;</span>)
+mylist$greeting</code></pre>
+<pre class="output"><code>[1] &quot;Hello, world&quot;
+</code></pre>
+<p>I’m skipping a lot of details here.</p>
+<p>This terminology is peculiar to R. Other languages make the same distinction they may use different words for vectors and lists.</p>
+<p>If you’re not sure what sort of object you are dealing with you can use <code>class</code>, or for more detailed information <code>str</code> (structure).</p>
+<h1 id="working-with-data">Working with data</h1>
+<h2 id="loading-data">Loading data</h2>
 <p>Our example data is quality measurements (particle size) on some PVC plastic production, using eight different resin batches, and three different machine operators.</p>
+<p>The data sets are stored in <a href="reference.html#comma-separated-values-(csv)">comma-separated values</a> (CSV) format. Each row is a resin batch, and each column is an operator. In RStudio, open <code>pvc.csv</code> and have a look at what it contains.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/pvc.csv&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre>
+<p>The expression <code>read.csv(...)</code> is a <a href="reference.html#function-call">function call</a> that asks R to run the function <code>read.csv</code>.</p>
+<p><code>read.csv</code> has two <a href="reference.html#argument">arguments</a>: the name of the file we want to read, and which column contains the row names. The filename needs to be a character string (or <a href="reference.html#string">string</a> for short), so we put it in quotes. Assigning the second argument, <code>row.names</code>, to be <code>1</code> indicates that the data file has row names, and which column number they are stored in.</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+</div>
+<div class="panel-body">
+<p><code>read.csv</code> actually has many more arguments that you may find useful when importing your own data in the future. You can learn more about these options in this supplementary <a href="01-supp-read-write-csv.html">lesson</a>.</p>
+</div>
+</aside>
+<p>The utility of a function is that it will perform its given action on whatever value is passed to the named argument(s). For example, in this case if we provided the name of a different file to the argument <code>file</code>, <code>read.csv</code> would read it instead. We’ll learn more of the details about functions and their arguments in the next lesson.</p>
 <pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/pvc.csv&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">dat</code></pre>
 <pre class="output"><code>       Alice   Bob  Carl
@@ -58,14 +168,158 @@ Resin8 36.80 36.45 33.15
  $ Bob  : num  35.4 35.4 29.6 30.1 31.4 ...
  $ Carl : num  35.3 33.4 29.2 28.6 29.3 ...
 </code></pre>
-<p><code>read.csv</code> has loaded the data as a data frame, but actually it is a matrix. In a data frame the columns contain different types of data, but in a matrix all the elements are the same type of data. A data frame contains a collection of “things” (rows) each with a set of properties (columns) of different types. A matrix in R is like a mathematical matrix, containing all the same type of thing (usually numbers).</p>
-<p>R often but not always lets these be used interchangably. Let us insist to R that what we have is a matrix.</p>
+<p><code>read.csv</code> has loaded the data as a data frame. A data frame contains a collection of “things” (rows) each with a set of properties (columns) of different types.</p>
+<p>Actually this data is a matrix. In a data frame the columns contain different types of data, but in a matrix all the elements are the same type of data. A matrix in R is like a mathematical matrix, containing all the same type of thing (usually numbers).</p>
+<p>R often but not always lets these be used interchangably. It’s also helpful when thinking about data to distinguish between a data frame and a matrix. Different operations make sense for data frames and matrices.</p>
+<p>Data frames are very central to R, and mastering R is very much about thinking in data frames. However when we get to RNA-Seq we will be using matrices of read counts, so it will be worth our time to learn to use matrices as well.</p>
+<p>Let us insist to R that what we have is a matrix.</p>
 <pre class="sourceCode r"><code class="sourceCode r">mat &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(dat)
 <span class="kw">class</span>(mat)</code></pre>
 <pre class="output"><code>[1] &quot;matrix&quot;
 </code></pre>
 <p>Much better.</p>
-<h1 id="a-t-test-or-two">A t-test or two</h1>
+<h3 id="manipulating-data">Manipulating Data</h3>
+<p>We can see the dimensions, or <a href="reference.html#shape-(of-an-array)">shape</a>, of the matrix with the function <code>dim</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(mat)</code></pre>
+<pre class="output"><code>[1] 8 3
+</code></pre>
+<p>This tells us that our matrix, <code>mat</code>, has 8 rows and 3 columns.</p>
+<p>If we want to get a single value from the data frame, we can provide an <a href="reference.html#index">index</a> in square brackets, just as we do in math:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># first value in mat</span>
+mat[<span class="dv">1</span>, <span class="dv">1</span>]</code></pre>
+<pre class="output"><code>[1] 36.25
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># a middle value in dat</span>
+mat[<span class="dv">4</span>, <span class="dv">2</span>]</code></pre>
+<pre class="output"><code>[1] 30.05
+</code></pre>
+<p>If our matrix has row names and column names, we can also refer to rows and columns by name.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mat[<span class="st">&quot;Resin4&quot;</span>,<span class="st">&quot;Bob&quot;</span>]</code></pre>
+<pre class="output"><code>[1] 30.05
+</code></pre>
+<p>An index like <code>[4, 2]</code> selects a single element of a data frame, but we can select whole sections as well. For example, we can select the first two operators (columns) of values for the first four resins (rows) like this:</p>
+<pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">1</span>:<span class="dv">2</span>, <span class="dv">1</span>:<span class="dv">4</span>]</code></pre>
+<pre class="output"><code>Error in mat[1:2, 1:4]: subscript out of bounds
+</code></pre>
+<p>The <a href="reference.html#slice">slice</a> <code>1:4</code> means, “Start at index 1 and go to index 4.” It’s the same as <code>c(1,2,3,4)</code>.</p>
+<p>The slice does not need to start at 1, e.g. the line below selects rows 5 through 8:</p>
+<pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">5</span>:<span class="dv">8</span>, <span class="dv">1</span>:<span class="dv">2</span>]</code></pre>
+<pre class="output"><code>       Alice   Bob
+Resin5 31.85 31.40
+Resin6 30.20 30.65
+Resin7 32.90 32.50
+Resin8 36.80 36.45
+</code></pre>
+<p>We can use vectors created with <code>c</code> to select non-contiguous values:</p>
+<pre class="sourceCode r"><code class="sourceCode r">mat[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>), <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</code></pre>
+<pre class="output"><code>       Alice Carl
+Resin1 36.25 35.3
+Resin3 30.70 29.2
+Resin5 31.85 29.3
+</code></pre>
+<p>We also don’t have to provide a slice for either the rows or the columns. If we don’t include a slice for the rows, R returns all the rows; if we don’t include a slice for the columns, R returns all the columns. If we don’t provide a slice for either rows or columns, e.g. <code>dat[, ]</code>, R returns the full matrix.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># All columns from row 5</span>
+mat[<span class="dv">5</span>, ]</code></pre>
+<pre class="output"><code>Alice   Bob  Carl 
+31.85 31.40 29.30 
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># All rows from column 2</span>
+mat[, <span class="dv">2</span>]</code></pre>
+<pre class="output"><code>Resin1 Resin2 Resin3 Resin4 Resin5 Resin6 Resin7 Resin8 
+ 35.40  35.35  29.65  30.05  31.40  30.65  32.50  36.45 
+</code></pre>
+<p>Now let’s perform some common mathematical operations to learn about our inflammation data. When analyzing data we often want to look at partial statistics, such as the maximum value per resin or the average value per operator. One way to do this is to select the data we want to create a new temporary vector (or matrix, or data frame), and then perform the calculation on this subset:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># first row, all of the columns</span>
+resin_1 &lt;-<span class="st"> </span>mat[<span class="dv">1</span>, ]
+<span class="co"># max particle size for resin 1</span>
+<span class="kw">max</span>(resin_1)</code></pre>
+<pre class="output"><code>[1] 36.25
+</code></pre>
+<p>We don’t actually need to store the row in a variable of its own. Instead, we can combine the selection and the function call:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># max particle size for resin 2</span>
+<span class="kw">max</span>(mat[<span class="dv">2</span>, ])</code></pre>
+<pre class="output"><code>[1] 35.35
+</code></pre>
+<p>R also has functions for other common calculations, e.g. finding the minimum, mean, median, and standard deviation of the data:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># minimum particle size for operator 3</span>
+<span class="kw">min</span>(mat[, <span class="dv">3</span>])</code></pre>
+<pre class="output"><code>[1] 28.65
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># mean for operator 3</span>
+<span class="kw">mean</span>(mat[, <span class="dv">3</span>])</code></pre>
+<pre class="output"><code>[1] 31.4375
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># median for operator 3</span>
+<span class="kw">median</span>(mat[, <span class="dv">3</span>])</code></pre>
+<pre class="output"><code>[1] 31.275
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># standard deviation for operator 3</span>
+<span class="kw">sd</span>(mat[, <span class="dv">3</span>])</code></pre>
+<pre class="output"><code>[1] 2.49453
+</code></pre>
+<p>What if we need the maximum particle size for all resins, or the average for each operator? As the diagram below shows, we want to perform the operation across a margin of the matrix:</p>
+<p><img src="fig/r-operations-across-axes.svg" alt="Operations Across Axes" /></p>
+<p>To support this, we can use the <code>apply</code> function.</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+</div>
+<div class="panel-body">
+<p>To learn about a function in R, e.g. <code>apply</code>, we can read its help documention by running <code>help(apply)</code> or <code>?apply</code>.</p>
+</div>
+</aside>
+<p><code>apply</code> allows us to repeat a function on all of the rows (<code>MARGIN = 1</code>) or columns (<code>MARGIN = 2</code>) of a matrix.</p>
+<p>Thus, to obtain the average particle size of each resin we will need to calculate the mean of all of the rows (<code>MARGIN = 1</code>) of the matrix.</p>
+<pre class="sourceCode r"><code class="sourceCode r">avg_resin &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">1</span>, mean)</code></pre>
+<p>And to obtain the average particle size for each operator we will need to calculate the mean of all of the columns (<code>MARGIN = 2</code>) of the matrix.</p>
+<pre class="sourceCode r"><code class="sourceCode r">avg_operator &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, mean)</code></pre>
+<p>Since the second argument to <code>apply</code> is <code>MARGIN</code>, the above command is equivalent to <code>apply(dat, MARGIN = 2, mean)</code>. We’ll learn why this is so in the next lesson.</p>
+<aside class="callout panel panel-info">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
+</div>
+<div class="panel-body">
+<p>Some common operations have more efficient alternatives. For example, you can calculate the row-wise or column-wise means with <code>rowMeans</code> and <code>colMeans</code>, respectively.</p>
+</div>
+</aside>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Slicing (subsetting) data</h2>
+</div>
+<div class="panel-body">
+<p>We can take slices of character vectors as well:</p>
+<pre class="sourceCode r"><code class="sourceCode r">animal &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&quot;o&quot;</span>, <span class="st">&quot;n&quot;</span>, <span class="st">&quot;k&quot;</span>, <span class="st">&quot;e&quot;</span>, <span class="st">&quot;y&quot;</span>)
+<span class="co"># first three characters</span>
+animal[<span class="dv">1</span>:<span class="dv">3</span>]</code></pre>
+<pre class="output"><code>[1] &quot;m&quot; &quot;o&quot; &quot;n&quot;
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># last three characters</span>
+animal[<span class="dv">4</span>:<span class="dv">6</span>]</code></pre>
+<pre class="output"><code>[1] &quot;k&quot; &quot;e&quot; &quot;y&quot;
+</code></pre>
+<ol style="list-style-type: decimal">
+<li><p>If the first four characters are selected using the slice <code>animal[1:4]</code>, how can we obtain the first four characters in reverse order?</p></li>
+<li><p>What is <code>animal[-1]</code>? What is <code>animal[-4]</code>? Given those answers, explain what <code>animal[-1:-4]</code> does.</p></li>
+<li><p>Use a slice of <code>animal</code> to create a new character vector that spells the word “eon”, i.e. <code>c(&quot;e&quot;, &quot;o&quot;, &quot;n&quot;)</code>.</p></li>
+</ol>
+</div>
+</section>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Subsetting data 2</h2>
+</div>
+<div class="panel-body">
+<p>Suppose you want to determine the maximum particle size for resin 5 across operators 2 and 3. To do this you would extract the relevant slice from the data frame and calculate the maximum value. Which of the following lines of R code gives the correct answer?</p>
+<ol style="list-style-type: lower-alpha">
+<li><code>max(dat[5, ])</code></li>
+<li><code>max(dat[2:3, 5])</code></li>
+<li><code>max(dat[5, 2:3])</code></li>
+<li><code>max(dat[5, 2, 3])</code></li>
+</ol>
+</div>
+</section>
+<h2 id="a-t-test-or-two">A t-test or two</h2>
+<p>R has many statistical tests built in. A classic tests is the t test. Do the means of two vectors differ significantly?</p>
 <pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">1</span>,]</code></pre>
 <pre class="output"><code>Alice   Bob  Carl 
 36.25 35.40 35.30 
@@ -87,7 +341,7 @@ sample estimates:
 mean of x mean of y 
  35.65000  34.61667 
 </code></pre>
-<p>Actually, this can be considered a paired sample t-test.</p>
+<p>Actually, this can be considered a paired sample t-test. Since the values can be paired up by operator.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(mat[<span class="dv">1</span>,], mat[<span class="dv">2</span>,], <span class="dt">paired=</span><span class="ot">TRUE</span>)</code></pre>
 <pre class="output"><code>
     Paired t-test
@@ -118,7 +372,27 @@ mean of the differences
 <pre class="sourceCode r"><code class="sourceCode r">result$p.value</code></pre>
 <pre class="output"><code>[1] 0.2007814
 </code></pre>
-<p>This means we can write software that uses the various results from t-test, for example performing a whole lot of t-tests and reporting the significant results.</p>
+<p>This means we can write software that uses the various results from t-test, for example performing a whole series of t-tests and reporting the significant results.</p>
+<h3 id="plotting">Plotting</h3>
+<p>The mathematician Richard Hamming once said, “The purpose of computing is insight, not numbers,” and the best way to develop insight is often to visualize data. Visualization deserves an entire lecture (or course) of its own, but we can explore a few of R’s plotting features.</p>
+<p>Let’s take a look at the average inflammation over time. Recall that we already calculated these values above using <code>apply(mat, 2, mean)</code> and saved them in the variable <code>avg_operator</code>. Plotting the values is done with the function <code>plot</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(avg_operator)</code></pre>
+<p><img src="fig/M1-start-plot-avg-operator-1.png" title="plot of chunk plot-avg-operator" alt="plot of chunk plot-avg-operator" style="display: block; margin: auto;" /></p>
+<p>Above, we gave the function <code>plot</code> a vector of numbers corresponding to the average per operator across all resins. <code>plot</code> created a scatter plot where the y-axis is the average particle size and the x-axis is the order, or index, of the values in the vector, which in this case correspond to the 3 operators. Let’s have a look at two other statistics: the maximum and minimum inflammation per operator.</p>
+<pre class="sourceCode r"><code class="sourceCode r">max_operator &lt;-<span class="st"> </span><span class="kw">apply</span>(mat, <span class="dv">2</span>, max)
+<span class="kw">plot</span>(max_operator)</code></pre>
+<p><img src="fig/M1-start-plot-max-operator-1.png" title="plot of chunk plot-max-operator" alt="plot of chunk plot-max-operator" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r">min_operator &lt;-<span class="st"> </span><span class="kw">apply</span>(dat, <span class="dv">2</span>, min)
+<span class="kw">plot</span>(min_operator)</code></pre>
+<p><img src="fig/M1-start-plot-min-operator-1.png" title="plot of chunk plot-min-operator" alt="plot of chunk plot-min-operator" style="display: block; margin: auto;" /></p>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Plotting data</h2>
+</div>
+<div class="panel-body">
+<p>Create a plot showing the standard deviation of for each operator across all resins.</p>
+</div>
+</section>
 <h1 id="a-proper-example-of-a-data-frame">A proper example of a data frame</h1>
 <p>Instead of storing this data in a matrix, we could store each measurement in a row of a data frame. We can convert to this “long” form with the <code>melt</code> function in the library <code>reshape2</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(reshape2)
@@ -147,16 +421,19 @@ long &lt;-<span class="st"> </span><span class="kw">melt</span>(mat)
 <p>A more recent and much more powerful plotting library is <code>ggplot2</code>. The syntax is a little strange, but there are plenty of examples in the online documentation.</p>
 <p>If <code>ggplot2</code> isn’t already installed, we need to install it.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre>
 <pre class="output"><code>Loading required package: methods
 </code></pre>
 <p>A simple example:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-33-1.png" title="plot of chunk unnamed-chunk-33" alt="plot of chunk unnamed-chunk-33" style="display: block; margin: auto;" /></p>
 <p>The call to <code>ggplot</code> sets up the basics of how we are going to represent the various columns of the data frame. We then literally add layers of graphics to this.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-13-1.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value, <span class="dt">group=</span>resin, <span class="dt">color=</span>resin)) +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-13-2.png" title="plot of chunk unnamed-chunk-13" alt="plot of chunk unnamed-chunk-13" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-34-2.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>resin) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="fig/M1-start-unnamed-chunk-34-3.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
 <p>This long form is also ideal for statistical testing. Here is a one-way ANOVA.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">oneway.test</span>(value ~<span class="st"> </span>resin, <span class="dt">data=</span>long)</code></pre>
 <pre class="output"><code>
