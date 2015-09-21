@@ -467,5 +467,7 @@ oneway.test(value ~ resin, data=long)
 A two-way ANOVA analysis would be better here. This is *well* beyond the scope of this course, but could be achived with something like:
 
 ```{r}
-anova(lm(value ~ resin + operator, data=long))
+null <- lm(value ~ operator, data=long)
+alt <- lm(value ~ resin + operator, data=long)
+anova(null, alt)
 ```

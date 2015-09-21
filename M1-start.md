@@ -955,7 +955,9 @@ A two-way ANOVA analysis would be better here. This is *well* beyond the scope o
 
 
 ~~~{.r}
-anova(lm(value ~ resin + operator, data=long))
+null <- lm(value ~ operator, data=long)
+alt <- lm(value ~ resin + operator, data=long)
+anova(null, alt)
 ~~~
 
 
@@ -963,11 +965,11 @@ anova(lm(value ~ resin + operator, data=long))
 ~~~{.output}
 Analysis of Variance Table
 
-Response: value
-          Df  Sum Sq Mean Sq F value    Pr(>F)    
-resin      7 141.973 20.2818  39.615 3.599e-08 ***
-operator   2  10.359  5.1795  10.117  0.001913 ** 
-Residuals 14   7.168  0.5120                      
+Model 1: value ~ operator
+Model 2: value ~ resin + operator
+  Res.Df     RSS Df Sum of Sq      F    Pr(>F)    
+1     21 149.141                                  
+2     14   7.168  7    141.97 39.615 3.599e-08 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
