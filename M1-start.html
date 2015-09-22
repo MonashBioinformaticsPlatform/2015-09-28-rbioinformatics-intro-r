@@ -43,7 +43,7 @@
 <li>Assign values to variables.</li>
 <li>Read tabular data from a file.</li>
 <li>Select individual values and subsections from data.</li>
-<li>Perform operations on data.</li>
+<li>Use functions.</li>
 <li>Display graphs.</li>
 </ul>
 </div>
@@ -54,6 +54,7 @@
 <p><code>*</code> has higher precedence than <code>+</code>. We can use brackets if necessary <code>( )</code>. Try <code>1+2*3</code> and <code>(1+2)*3</code>.</p>
 <p>Spaces can be used to make code easier to read.</p>
 <p>We can compare with <code>&lt; &gt; &lt;= &gt;=</code>. This produces a “logical” value, <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>There are also character strings such as <code>&quot;string&quot;</code>.</p>
 <h2 id="variables">Variables</h2>
 <p>A variable is a name for a value, such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. We can create a new variable by assigning a value to it using <code>&lt;-</code></p>
 <pre class="sourceCode r"><code class="sourceCode r">weight_kg &lt;-<span class="st"> </span><span class="dv">55</span></code></pre>
@@ -120,7 +121,7 @@ myvec +<span class="st"> </span><span class="dv">1</span></code></pre>
 </code></pre>
 <p>Access elements of a vector with <code>[ ]</code>, for example <code>myvec[1]</code>.</p>
 <p>We will also encounter character strings, for example <code>&quot;hello&quot;</code>. R also has something called “factors”, which are categorical vectors, and behave very much like character vectors (think the factors in an experiment). R likes turning character vectors into factors, which is usually fine.</p>
-<p>R has various functions, such as <code>sum( )</code>. We can get help on a function with, eg <code>?sum</code>. Because R is a language for statistics, it has many built in statistics-related functions. We will also be loading more specialized functions from “libraries”.</p>
+<p>R has various functions, such as <code>sum( )</code>. We can get help on a function with, eg <code>?sum</code>. Because R is a language for statistics, it has many built in statistics-related functions. We will also be loading more specialized functions from “libraries” (also known as “packages”).</p>
 <h2 id="lists">Lists</h2>
 <p>Vectors contain all the same kind of thing. Try <code>c(42, &quot;hello&quot;)</code>. Lists can contain different kinds of thing.</p>
 <p>We generally gives the things in a list names. Try <code>list(num=42, greeting=&quot;hello&quot;)</code>. To access named elements we use <code>$</code>.</p>
@@ -133,7 +134,7 @@ mylist$greeting</code></pre>
 <p>If you’re not sure what sort of object you are dealing with you can use <code>class</code>, or for more detailed information <code>str</code> (structure).</p>
 <h1 id="working-with-data">Working with data</h1>
 <h2 id="loading-data">Loading data</h2>
-<p>Our example data is quality measurements (particle size) on some PVC plastic production, using eight different resin batches, and three different machine operators.</p>
+<p>Our example data is quality measurements (particle size) on PVC plastic production, using eight different resin batches, and three different machine operators.</p>
 <p>The data sets are stored in <a href="reference.html#comma-separated-values-(csv)">comma-separated values</a> (CSV) format. Each row is a resin batch, and each column is an operator. In RStudio, open <code>pvc.csv</code> and have a look at what it contains.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/pvc.csv&quot;</span>, <span class="dt">row.names=</span><span class="dv">1</span>)</code></pre>
 <p>The expression <code>read.csv(...)</code> is a <a href="reference.html#function-call">function call</a> that asks R to run the function <code>read.csv</code>.</p>
@@ -189,7 +190,7 @@ Resin8 36.80 36.45 33.15
 mat[<span class="dv">1</span>, <span class="dv">1</span>]</code></pre>
 <pre class="output"><code>[1] 36.25
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># a middle value in dat</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># a middle value in mat</span>
 mat[<span class="dv">4</span>, <span class="dv">2</span>]</code></pre>
 <pre class="output"><code>[1] 30.05
 </code></pre>
@@ -319,7 +320,7 @@ animal[<span class="dv">4</span>:<span class="dv">6</span>]</code></pre>
 </div>
 </section>
 <h2 id="a-t-test-or-two">A t-test or two</h2>
-<p>R has many statistical tests built in. A classic tests is the t test. Do the means of two vectors differ significantly?</p>
+<p>R has many statistical tests built in. A classic test is the t test. Do the means of two vectors differ significantly?</p>
 <pre class="sourceCode r"><code class="sourceCode r">mat[<span class="dv">1</span>,]</code></pre>
 <pre class="output"><code>Alice   Bob  Carl 
 36.25 35.40 35.30 
@@ -341,7 +342,7 @@ sample estimates:
 mean of x mean of y 
  35.65000  34.61667 
 </code></pre>
-<p>Actually, this can be considered a paired sample t-test. Since the values can be paired up by operator.</p>
+<p>Actually, this can be considered a paired sample t-test, since the values can be paired up by operator. By default <code>t.test</code> performs an unpaired t test. We see in the documentation (<code>?t.test</code>) that we can give <code>paired=TRUE</code> as an argument in order to perform a paired t-test.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t.test</span>(mat[<span class="dv">1</span>,], mat[<span class="dv">2</span>,], <span class="dt">paired=</span><span class="ot">TRUE</span>)</code></pre>
 <pre class="output"><code>
     Paired t-test

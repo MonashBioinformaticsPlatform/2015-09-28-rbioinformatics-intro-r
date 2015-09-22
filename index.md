@@ -36,7 +36,11 @@ and to use that language *well*.
 
 ## Topics
 
+### Alternative introductory lesson
+
 M1. [Introducing R, analyzing data](M1-start.html)
+
+### Standard Software Carpentry R course
 
 1.  [Analyzing patient data](01-starting-with-data.html)
 2.  [Creating functions](02-func-R.html)

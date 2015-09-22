@@ -12,7 +12,7 @@ minutes: 30
 > * Assign values to variables.
 > * Read tabular data from a file.
 > * Select individual values and subsections from data.
-> * Perform operations on data.
+> * Use functions.
 > * Display graphs.
 
 
@@ -27,6 +27,9 @@ Open RStudio, click on the "Console" pane, type `1+1` and press enter. R display
 Spaces can be used to make code easier to read.
 
 We can compare with `< > <= >=`. This produces a "logical" value, `TRUE` or `FALSE`.
+
+There are also character strings such as `"string"`.
+
 
 ## Variables
 
@@ -213,7 +216,7 @@ Access elements of a vector with `[ ]`, for example `myvec[1]`.
 
 We will also encounter character strings, for example `"hello"`. R also has something called "factors", which are categorical vectors, and behave very much like character vectors (think the factors in an experiment). R likes turning character vectors into factors, which is usually fine.
 
-R has various functions, such as `sum( )`. We can get help on a function with, eg `?sum`. Because R is a language for statistics, it has many built in statistics-related functions. We will also be loading more specialized functions from "libraries".
+R has various functions, such as `sum( )`. We can get help on a function with, eg `?sum`. Because R is a language for statistics, it has many built in statistics-related functions. We will also be loading more specialized functions from "libraries" (also known as "packages").
 
 
 ## Lists
@@ -246,7 +249,7 @@ If you're not sure what sort of object you are dealing with you can use `class`,
 
 ## Loading data
 
-Our example data is quality measurements (particle size) on some PVC plastic production, using eight different resin batches, and three different machine operators.
+Our example data is quality measurements (particle size) on PVC plastic production, using eight different resin batches, and three different machine operators.
 
 The data sets are stored in [comma-separated values](reference.html#comma-separated-values-(csv)) (CSV) format. Each row is a resin batch, and each column is an operator. In RStudio, open `pvc.csv` and have a look at what it contains.
 
@@ -389,7 +392,7 @@ mat[1, 1]
 
 
 ~~~{.r}
-# a middle value in dat
+# a middle value in mat
 mat[4, 2]
 ~~~
 
@@ -680,7 +683,7 @@ We'll learn why this is so in the next lesson.
 
 ## A t-test or two
 
-R has many statistical tests built in. A classic tests is the t test. Do the means of two vectors differ significantly?
+R has many statistical tests built in. A classic test is the t test. Do the means of two vectors differ significantly?
 
 
 ~~~{.r}
@@ -732,7 +735,7 @@ mean of x mean of y
 
 ~~~
 
-Actually, this can be considered a paired sample t-test. Since the values can be paired up by operator.
+Actually, this can be considered a paired sample t-test, since the values can be paired up by operator. By default `t.test` performs an unpaired t test. We see in the documentation (`?t.test`) that we can give `paired=TRUE` as an argument in order to perform a paired t-test.
 
 
 ~~~{.r}
