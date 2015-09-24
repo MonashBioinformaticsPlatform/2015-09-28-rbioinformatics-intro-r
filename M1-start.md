@@ -911,7 +911,7 @@ head(long)
 
 This long form is often the best form for exploration and statistical testing of data.
 
-We already saw some of R's built in plotting facilities with the function `plot`. A more recent and much more powerful plotting library is `ggplot2`. The syntax is a little strange, but there are plenty of examples in the [online documentation](http://docs.ggplot2.org/current/).
+We already saw some of R's built in plotting facilities with the function `plot`. A more recent and much more powerful plotting library is `ggplot2`. This implements ideas from a book called "The Grammar of Graphics". The syntax is a little strange, but there are plenty of examples in the [online documentation](http://docs.ggplot2.org/current/).
 
 If `ggplot2` isn't already installed, we need to install it.
 
@@ -951,13 +951,15 @@ ggplot(long, aes(x=operator, y=value)) + geom_boxplot() + geom_point()
 <img src="fig/M1-start-unnamed-chunk-35-1.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />
 
 ~~~{.r}
-ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) + geom_line()
+ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) +
+    geom_line() + theme_bw()
 ~~~
 
 <img src="fig/M1-start-unnamed-chunk-35-2.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />
 
 ~~~{.r}
-ggplot(long, aes(x=operator, y=value)) + facet_wrap(~ resin) + geom_point()
+ggplot(long, aes(x=operator, y=value)) +
+    facet_wrap(~ resin) + geom_point() + theme_bw()
 ~~~
 
 <img src="fig/M1-start-unnamed-chunk-35-3.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />

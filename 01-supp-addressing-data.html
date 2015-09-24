@@ -330,7 +330,7 @@ The following object is masked _by_ &#39;.GlobalEnv&#39;:
 
     mpg
 </code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(combined_all, <span class="kw">aes</span>(<span class="dt">x=</span>hp,<span class="dt">y=</span>mpg,<span class="dt">color=</span>cyl)) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(combined_all, <span class="kw">aes</span>(<span class="dt">x=</span>hp,<span class="dt">y=</span>mpg,<span class="dt">color=</span>cyl)) +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">theme_bw</span>()</code></pre>
 <pre class="output"><code>Warning: Removed 2 rows containing missing values (geom_point).
 </code></pre>
 <p><img src="fig/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" /></p>
@@ -385,7 +385,7 @@ The following object is masked _by_ &#39;.GlobalEnv&#39;:
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge</h2>
 </div>
 <div class="panel-body">
-<p>Find the top 5 best cars in terms of miles-per-gallon. (Look at the documentation for order to see how to sort in descending order, <code>?order</code>)</p>
+<p>Show the top 5 best cars in terms of miles-per-gallon. (Look at the documentation for order to see how to sort in descending order, <code>?order</code>)</p>
 <p>What does order do with missing values (NA)?</p>
 </div>
 </section>

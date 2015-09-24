@@ -448,7 +448,7 @@ head(long)
 
 This long form is often the best form for exploration and statistical testing of data.
 
-We already saw some of R's built in plotting facilities with the function `plot`. A more recent and much more powerful plotting library is `ggplot2`. The syntax is a little strange, but there are plenty of examples in the [online documentation](http://docs.ggplot2.org/current/).
+We already saw some of R's built in plotting facilities with the function `plot`. A more recent and much more powerful plotting library is `ggplot2`. This implements ideas from a book called "The Grammar of Graphics". The syntax is a little strange, but there are plenty of examples in the [online documentation](http://docs.ggplot2.org/current/).
 
 If `ggplot2` isn't already installed, we need to install it.
 
@@ -470,8 +470,12 @@ The call to `ggplot` sets up the basics of how we are going to represent the var
 
 ```{r}
 ggplot(long, aes(x=operator, y=value)) + geom_boxplot() + geom_point()
-ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) + geom_line()
-ggplot(long, aes(x=operator, y=value)) + facet_wrap(~ resin) + geom_point()
+
+ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) +
+    geom_line() + theme_bw()
+
+ggplot(long, aes(x=operator, y=value)) +
+    facet_wrap(~ resin) + geom_point() + theme_bw()
 ```
 
 ggplots can be save as we talked about above, but with one small twist to keep in mind. The act of plotting a ggplot is actually triggered when it is printed. In an interactive session we are automatically printing each value we calculate, but if you are writing a function you might need to explcitly `print( )` the plot.

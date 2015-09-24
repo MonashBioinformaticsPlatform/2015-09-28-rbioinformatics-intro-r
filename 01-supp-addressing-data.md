@@ -548,7 +548,7 @@ The following object is masked _by_ '.GlobalEnv':
 
 
 ~~~{.r}
-ggplot(combined_all, aes(x=hp,y=mpg,color=cyl)) + geom_point()
+ggplot(combined_all, aes(x=hp,y=mpg,color=cyl)) + geom_point() + theme_bw()
 ~~~
 
 
@@ -639,7 +639,7 @@ combined_all[ order(combined_all$cyl), ]
 
 > ## Challenge {.challenge}
 >
-> Find the top 5 best cars in terms of miles-per-gallon.
+> Show the top 5 best cars in terms of miles-per-gallon.
 > (Look at the documentation for order to see how to sort in descending order, `?order`)
 >
 > What does order do with missing values (NA)?
