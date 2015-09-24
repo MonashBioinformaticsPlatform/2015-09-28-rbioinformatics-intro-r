@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
-    <title>Programming with R</title>
+    <title>Welcome to R, let’s analyze some data - Programming with R</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
@@ -397,6 +397,13 @@ mean of the differences
 <p>Create a plot showing the standard deviation of for each operator across all resins.</p>
 </div>
 </section>
+<h2 id="saving-plots">Saving plots</h2>
+<p>It’s possible to save a plot as a .PNG or .PDF from the RStudio interface with the “Export” button. However if we want to automate plot making, we need to do this with R code.</p>
+<p>Plotting in R is sent to a “device”. By default, this device is RStudio. However we can temporarily send plots to a different device, such as a .PNG file (<code>png(&quot;filename.png&quot;)</code>) or .PDF file (<code>pdf(&quot;filename.pdf&quot;)</code>).</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pdf</span>(<span class="st">&quot;test.pdf&quot;</span>)
+<span class="kw">plot</span>(avg_resin)
+<span class="kw">dev.off</span>()</code></pre>
+<p><code>dev.off()</code> is very important. It tells R to stop outputting to the pdf device and return to using the default device. If you forget it, your interactive plots will stop appearing as expected!</p>
 <h1 id="a-proper-example-of-a-data-frame">A proper example of a data frame</h1>
 <p>Instead of storing this data in a matrix, we could store each measurement in a row of a data frame. We can convert to this “long” form with the <code>melt</code> function in the library <code>reshape2</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(reshape2)
@@ -429,14 +436,29 @@ long &lt;-<span class="st"> </span><span class="kw">melt</span>(mat)
 </code></pre>
 <p>A simple example:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-33-1.png" title="plot of chunk unnamed-chunk-33" alt="plot of chunk unnamed-chunk-33" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
 <p>The call to <code>ggplot</code> sets up the basics of how we are going to represent the various columns of the data frame. We then literally add layers of graphics to this.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_boxplot</span>() +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-35-1.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value, <span class="dt">group=</span>resin, <span class="dt">color=</span>resin)) +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-34-2.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-35-2.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" /></p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>resin) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
-<p><img src="fig/M1-start-unnamed-chunk-34-3.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" /></p>
+<p><img src="fig/M1-start-unnamed-chunk-35-3.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" /></p>
+<p>ggplots can be save as we talked about above, but with one small twist to keep in mind. The act of plotting a ggplot is actually triggered when it is printed. In an interactive session we are automatically printing each value we calculate, but if you are writing a function you might need to explcitly <code>print( )</code> the plot.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot created but not shown.</span>
+p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(long, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>value)) +<span class="st"> </span><span class="kw">geom_point</span>()
+
+<span class="co"># Only when we try to look at the value p is it shown</span>
+p
+
+<span class="co"># Alternatively, we can explicitly print it</span>
+<span class="kw">print</span>(p)
+
+<span class="co"># To save to a file</span>
+<span class="kw">png</span>(<span class="st">&quot;test.png&quot;</span>)
+<span class="kw">print</span>(p)
+<span class="kw">dev.off</span>()</code></pre>
+<p>See also the function <code>ggsave</code>.</p>
 <p>This long form is also ideal for statistical testing. Here is a one-way ANOVA.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">oneway.test</span>(value ~<span class="st"> </span>resin, <span class="dt">data=</span>long)</code></pre>
 <pre class="output"><code>

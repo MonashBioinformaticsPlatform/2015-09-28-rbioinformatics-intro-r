@@ -419,7 +419,19 @@ plot(min_operator)
 >
 > Create a plot showing the standard deviation of for each operator across all resins.
 
+## Saving plots
 
+It's possible to save a plot as a .PNG or .PDF from the RStudio interface with the "Export" button. However if we want to automate plot making, we need to do this with R code.
+
+Plotting in R is sent to a "device". By default, this device is RStudio. However we can temporarily send plots to a different device, such as a .PNG file (`png("filename.png")`) or .PDF file (`pdf("filename.pdf")`).
+
+```{r, eval=FALSE}
+pdf("test.pdf")
+plot(avg_resin)
+dev.off()
+```
+
+`dev.off()` is very important. It tells R to stop outputting to the pdf device and return to using the default device. If you forget it, your interactive plots will stop appearing as expected!
 
 
 # A proper example of a data frame
@@ -461,6 +473,26 @@ ggplot(long, aes(x=operator, y=value)) + geom_boxplot() + geom_point()
 ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) + geom_line()
 ggplot(long, aes(x=operator, y=value)) + facet_wrap(~ resin) + geom_point()
 ```
+
+ggplots can be save as we talked about above, but with one small twist to keep in mind. The act of plotting a ggplot is actually triggered when it is printed. In an interactive session we are automatically printing each value we calculate, but if you are writing a function you might need to explcitly `print( )` the plot.
+
+```{r, eval=FALSE}
+# Plot created but not shown.
+p <- ggplot(long, aes(x=operator, y=value)) + geom_point()
+
+# Only when we try to look at the value p is it shown
+p
+
+# Alternatively, we can explicitly print it
+print(p)
+
+# To save to a file
+png("test.png")
+print(p)
+dev.off()
+```
+
+See also the function `ggsave`.
 
 This long form is also ideal for statistical testing. Here is a one-way ANOVA.
 

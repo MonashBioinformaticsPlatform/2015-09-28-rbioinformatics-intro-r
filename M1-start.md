@@ -849,7 +849,20 @@ plot(min_operator)
 >
 > Create a plot showing the standard deviation of for each operator across all resins.
 
+## Saving plots
 
+It's possible to save a plot as a .PNG or .PDF from the RStudio interface with the "Export" button. However if we want to automate plot making, we need to do this with R code.
+
+Plotting in R is sent to a "device". By default, this device is RStudio. However we can temporarily send plots to a different device, such as a .PNG file (`png("filename.png")`) or .PDF file (`pdf("filename.pdf")`).
+
+
+~~~{.r}
+pdf("test.pdf")
+plot(avg_resin)
+dev.off()
+~~~
+
+`dev.off()` is very important. It tells R to stop outputting to the pdf device and return to using the default device. If you forget it, your interactive plots will stop appearing as expected!
 
 
 # A proper example of a data frame
@@ -926,7 +939,7 @@ A simple example:
 ggplot(long, aes(x=operator, y=value)) + geom_point()
 ~~~
 
-<img src="fig/M1-start-unnamed-chunk-33-1.png" title="plot of chunk unnamed-chunk-33" alt="plot of chunk unnamed-chunk-33" style="display: block; margin: auto;" />
+<img src="fig/M1-start-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" />
 
 The call to `ggplot` sets up the basics of how we are going to represent the various columns of the data frame. We then literally add layers of graphics to this.
 
@@ -935,19 +948,40 @@ The call to `ggplot` sets up the basics of how we are going to represent the var
 ggplot(long, aes(x=operator, y=value)) + geom_boxplot() + geom_point()
 ~~~
 
-<img src="fig/M1-start-unnamed-chunk-34-1.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" />
+<img src="fig/M1-start-unnamed-chunk-35-1.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />
 
 ~~~{.r}
 ggplot(long, aes(x=operator, y=value, group=resin, color=resin)) + geom_line()
 ~~~
 
-<img src="fig/M1-start-unnamed-chunk-34-2.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" />
+<img src="fig/M1-start-unnamed-chunk-35-2.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />
 
 ~~~{.r}
 ggplot(long, aes(x=operator, y=value)) + facet_wrap(~ resin) + geom_point()
 ~~~
 
-<img src="fig/M1-start-unnamed-chunk-34-3.png" title="plot of chunk unnamed-chunk-34" alt="plot of chunk unnamed-chunk-34" style="display: block; margin: auto;" />
+<img src="fig/M1-start-unnamed-chunk-35-3.png" title="plot of chunk unnamed-chunk-35" alt="plot of chunk unnamed-chunk-35" style="display: block; margin: auto;" />
+
+ggplots can be save as we talked about above, but with one small twist to keep in mind. The act of plotting a ggplot is actually triggered when it is printed. In an interactive session we are automatically printing each value we calculate, but if you are writing a function you might need to explcitly `print( )` the plot.
+
+
+~~~{.r}
+# Plot created but not shown.
+p <- ggplot(long, aes(x=operator, y=value)) + geom_point()
+
+# Only when we try to look at the value p is it shown
+p
+
+# Alternatively, we can explicitly print it
+print(p)
+
+# To save to a file
+png("test.png")
+print(p)
+dev.off()
+~~~
+
+See also the function `ggsave`.
 
 This long form is also ideal for statistical testing. Here is a one-way ANOVA.
 
