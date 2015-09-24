@@ -29,7 +29,7 @@ Open RStudio, click on the "Console" pane, type `1+1` and press enter. R display
 
 Spaces can be used to make code easier to read.
 
-We can compare with `< > <= >=`. This produces a "logical" value, `TRUE` or `FALSE`.
+We can compare with `== < > <= >=`. This produces a "logical" value, `TRUE` or `FALSE`. Note the double equals, `==`, for equality comparison.
 
 There are also character strings such as `"string"`.
 
@@ -203,10 +203,11 @@ Much better.
 
 ### Manipulating Data
 
-We can see the dimensions, or [shape](reference.html#shape-(of-an-array)), of the matrix with the function `dim`:
+We can see the dimensions, or [shape](reference.html#shape-(of-an-array)), of the matrix with the functions `nrow` and `ncol`:
 
 ```{r}
-dim(mat)
+nrow(mat)
+ncol(mat)
 ```
 
 This tells us that our matrix, `mat`, has `r nrow(mat)` rows and `r ncol(mat)` columns.

@@ -53,7 +53,7 @@
 <p>Open RStudio, click on the “Console” pane, type <code>1+1</code> and press enter. R displays the result of the calculation.</p>
 <p><code>*</code> has higher precedence than <code>+</code>. We can use brackets if necessary <code>( )</code>. Try <code>1+2*3</code> and <code>(1+2)*3</code>.</p>
 <p>Spaces can be used to make code easier to read.</p>
-<p>We can compare with <code>&lt; &gt; &lt;= &gt;=</code>. This produces a “logical” value, <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>We can compare with <code>== &lt; &gt; &lt;= &gt;=</code>. This produces a “logical” value, <code>TRUE</code> or <code>FALSE</code>. Note the double equals, <code>==</code>, for equality comparison.</p>
 <p>There are also character strings such as <code>&quot;string&quot;</code>.</p>
 <h2 id="variables">Variables</h2>
 <p>A variable is a name for a value, such as <code>x</code>, <code>current_temperature</code>, or <code>subject_id</code>. We can create a new variable by assigning a value to it using <code>&lt;-</code></p>
@@ -180,9 +180,12 @@ Resin8 36.80 36.45 33.15
 </code></pre>
 <p>Much better.</p>
 <h3 id="manipulating-data">Manipulating Data</h3>
-<p>We can see the dimensions, or <a href="reference.html#shape-(of-an-array)">shape</a>, of the matrix with the function <code>dim</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(mat)</code></pre>
-<pre class="output"><code>[1] 8 3
+<p>We can see the dimensions, or <a href="reference.html#shape-(of-an-array)">shape</a>, of the matrix with the functions <code>nrow</code> and <code>ncol</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(mat)</code></pre>
+<pre class="output"><code>[1] 8
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(mat)</code></pre>
+<pre class="output"><code>[1] 3
 </code></pre>
 <p>This tells us that our matrix, <code>mat</code>, has 8 rows and 3 columns.</p>
 <p>If we want to get a single value from the data frame, we can provide an <a href="reference.html#index">index</a> in square brackets, just as we do in math:</p>

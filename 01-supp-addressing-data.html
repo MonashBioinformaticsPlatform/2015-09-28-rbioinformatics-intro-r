@@ -32,7 +32,7 @@
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
                     <a href="index.html"><h1 class="title">Programming with R</h1></a>
-          <h2 class="subtitle">Addressing data</h2>
+          <h2 class="subtitle">Addressing, merging, and sorting data</h2>
           <section class="objectives panel panel-warning">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-certificate"></span>Learning Objectives</h2>
@@ -41,6 +41,8 @@
 <ul>
 <li>Understand the 3 different ways R can address data inside a data frame.</li>
 <li>Combine different methods for addressing data with the assignment operator to update subsets of data</li>
+<li>Merge two data frames using a shared column</li>
+<li>Sort a data frame</li>
 </ul>
 </div>
 </section>
@@ -51,53 +53,60 @@
 <li>By name (columns only)</li>
 </ul>
 <p>Lets start by loading some sample data:</p>
-<pre class="sourceCode r"><code class="sourceCode r">dat&lt;-<span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&#39;data/sample.csv&#39;</span>,<span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)</code></pre>
-<aside class="callout panel panel-info">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pushpin"></span>Tip</h2>
-</div>
-<div class="panel-body">
-<p>The first row of this csv file is a list of column names. We used the <em>header=TRUE</em> argument to <code>read.csv</code> so that R can interpret the file correctly. We are using the <em>stringsAsFactors=FALSE</em> argument to override the default behaviour for R. Using factors in R is covered in a separate lesson.</p>
-</div>
-</aside>
+<pre class="sourceCode r"><code class="sourceCode r">info &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span><span class="st">&quot;data/motor-info.csv&quot;</span>)</code></pre>
 <p>Lets take a look at this data.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(dat)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(info)</code></pre>
 <pre class="output"><code>[1] &quot;data.frame&quot;
 </code></pre>
-<p>R has loaded the contents of the .csv file into a variable called <code>dat</code> which is a <code>data frame</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(dat)</code></pre>
-<pre class="output"><code>[1] 100   9
+<p>R has loaded the contents of the .csv file into a variable called <code>info</code> which is a <code>data frame</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(info)</code></pre>
+<pre class="output"><code>[1] 32 11
 </code></pre>
-<p>The data has 100 rows and 9 columns.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat)</code></pre>
-<pre class="output"><code>      ID Gender      Group BloodPressure  Age Aneurisms_q1 Aneurisms_q2
-1 Sub001      m    Control           132 16.0          114          140
-2 Sub002      m Treatment2           139 17.2          148          209
-3 Sub003      m Treatment2           130 19.5          196          251
-4 Sub004      f Treatment1           105 15.7          199          140
-5 Sub005      m Treatment1           125 19.9          188          120
-6 Sub006      M Treatment2           112 14.3          260          266
-  Aneurisms_q3 Aneurisms_q4
-1          202          237
-2          248          248
-3          122          177
-4          233          220
-5          222          228
-6          320          294
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(info)</code></pre>
+<pre class="output"><code>[1] 32
 </code></pre>
-<p>The data is the results of an (not real) experiment, looking at the number of aneurisms that formed in the eyes of patients who undertook 3 different treatments.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(info)</code></pre>
+<pre class="output"><code>[1] 11
+</code></pre>
+<p>The data has 32 rows and 11 columns.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(info)</code></pre>
+<pre class="output"><code>               make cyl disp  hp drat    wt  qsec vs am gear carb
+1         Mazda RX4   6  160 110 3.90 2.620 16.46  0  1    4    4
+2     Mazda RX4 Wag   6  160 110 3.90 2.875 17.02  0  1    4    4
+3        Datsun 710   4  108  93 3.85 2.320 18.61  1  1    4    1
+4    Hornet 4 Drive   6  258 110 3.08 3.215 19.44  1  0    3    1
+5 Hornet Sportabout   8  360 175 3.15 3.440 17.02  0  0    3    2
+6           Valiant   6  225 105 2.76 3.460 20.22  1  0    3    1
+</code></pre>
+<p>The <code>str</code> function gives a nice summary:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(info)</code></pre>
+<pre class="output"><code>&#39;data.frame&#39;:   32 obs. of  11 variables:
+ $ make: Factor w/ 32 levels &quot;AMC Javelin&quot;,..: 18 19 5 13 14 31 7 21 20 22 ...
+ $ cyl : int  6 6 4 6 8 6 8 4 4 6 ...
+ $ disp: num  160 160 108 258 360 ...
+ $ hp  : int  110 110 93 110 175 105 245 62 95 123 ...
+ $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+ $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+ $ qsec: num  16.5 17 18.6 19.4 17 ...
+ $ vs  : int  0 0 1 1 0 1 0 1 1 1 ...
+ $ am  : int  1 1 1 0 0 0 0 0 0 0 ...
+ $ gear: int  4 4 4 3 3 3 3 4 4 4 ...
+ $ carb: int  4 4 1 1 2 1 4 2 2 4 ...
+</code></pre>
+<p>The data are features of different makes of cars. (This is actually a standard R example data set called mtcars.)</p>
 <h3 id="addressing-by-index">Addressing by Index</h3>
-<p>Data can be accessed by index. We have already seen how square brackets <code>[</code> can be used to subset (slice) data. The generic format is <code>dat[row_numbers,column_numbers]</code>.</p>
+<p>Data can be accessed by index. We have already seen how square brackets <code>[</code> can be used to subset (slice) data. The generic format is <code>info[row_numbers,column_numbers]</code>.</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Selecting values 1</h2>
 </div>
 <div class="panel-body">
-<p>What will be returned by <code>dat[1,1]</code>?</p>
+<p>What will be returned by <code>info[1,1]</code>?</p>
 </div>
 </section>
-<pre class="sourceCode r"><code class="sourceCode r">dat[<span class="dv">1</span>,<span class="dv">1</span>]</code></pre>
-<pre class="output"><code>[1] &quot;Sub001&quot;
+<pre class="sourceCode r"><code class="sourceCode r">info[<span class="dv">1</span>,<span class="dv">1</span>]</code></pre>
+<pre class="output"><code>[1] Mazda RX4
+32 Levels: AMC Javelin Cadillac Fleetwood Camaro Z28 ... Volvo 142E
 </code></pre>
 <p>If we leave out a dimension R will interpret this as a request for all values in that dimension.</p>
 <section class="challenge panel panel-success">
@@ -105,7 +114,7 @@
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Selecting values 2</h2>
 </div>
 <div class="panel-body">
-<p>What will be returned by <code>dat[,2]</code>?</p>
+<p>What will be returned by <code>info[,2]</code>?</p>
 </div>
 </section>
 <p>The colon <code>:</code> can be used to create a sequence of integers.</p>
@@ -123,14 +132,14 @@
 </div>
 </section>
 <p>Finally we can use the <code>c()</code> (combine) function to address non-sequential rows and columns.</p>
-<pre class="sourceCode r"><code class="sourceCode r">dat[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>),<span class="dv">1</span>:<span class="dv">5</span>]</code></pre>
-<pre class="output"><code>      ID Gender      Group BloodPressure  Age
-1 Sub001      m    Control           132 16.0
-5 Sub005      m Treatment1           125 19.9
-7 Sub007      f    Control           173 17.7
-9 Sub009      m Treatment2           131 19.4
+<pre class="sourceCode r"><code class="sourceCode r">info[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>),<span class="dv">1</span>:<span class="dv">5</span>]</code></pre>
+<pre class="output"><code>               make cyl  disp  hp drat
+1         Mazda RX4   6 160.0 110 3.90
+5 Hornet Sportabout   8 360.0 175 3.15
+7        Duster 360   8 360.0 245 3.21
+9          Merc 230   4 140.8  95 3.92
 </code></pre>
-<p>Returns the first 5 columns for patients in rows 1,5,7 &amp; 9</p>
+<p>Returns the first 5 columns for cars in rows 1,5,7 &amp; 9</p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
 <h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Subsetting non-sequential data</h2>
@@ -139,12 +148,11 @@
 <p>Return the Age and Gender values for the first 5 patients.</p>
 </div>
 </section>
-<h3 id="addressing-by-name">Addressing by Name</h3>
+<h3 id="addressing-by-column-name">Addressing by column name</h3>
 <p>Columns in an R data frame are named.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(dat)</code></pre>
-<pre class="output"><code>[1] &quot;ID&quot;            &quot;Gender&quot;        &quot;Group&quot;         &quot;BloodPressure&quot;
-[5] &quot;Age&quot;           &quot;Aneurisms_q1&quot;  &quot;Aneurisms_q2&quot;  &quot;Aneurisms_q3&quot; 
-[9] &quot;Aneurisms_q4&quot; 
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(info)</code></pre>
+<pre class="output"><code> [1] &quot;make&quot; &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+[11] &quot;carb&quot;
 </code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
@@ -155,23 +163,18 @@
 </div>
 </aside>
 <p>We usually use the <code>$</code> operator to address a column by name</p>
-<pre class="sourceCode r"><code class="sourceCode r">dat$Gender</code></pre>
-<pre class="output"><code>  [1] &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot;
- [18] &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot;
- [35] &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;M&quot; &quot;M&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot;
- [52] &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;f&quot; &quot;f&quot;
- [69] &quot;M&quot; &quot;m&quot; &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;M&quot; &quot;M&quot; &quot;M&quot; &quot;f&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot; &quot;m&quot; &quot;m&quot;
- [86] &quot;f&quot; &quot;f&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;f&quot; &quot;m&quot; &quot;F&quot; &quot;f&quot; &quot;m&quot; &quot;m&quot; &quot;F&quot; &quot;m&quot; &quot;M&quot; &quot;M&quot;
+<pre class="sourceCode r"><code class="sourceCode r">info$cyl</code></pre>
+<pre class="output"><code> [1] 6 6 4 6 8 6 8 4 4 6 6 8 8 8 8 8 8 4 4 4 4 8 8 8 8 4 4 4 8 6 8 4
 </code></pre>
 <p>Named addressing can also be used in square brackets.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat[,<span class="kw">c</span>(<span class="st">&#39;Age&#39;</span>,<span class="st">&#39;Gender&#39;</span>)])</code></pre>
-<pre class="output"><code>   Age Gender
-1 16.0      m
-2 17.2      m
-3 19.5      m
-4 15.7      f
-5 19.9      m
-6 14.3      M
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>( info[,<span class="kw">c</span>(<span class="st">&#39;cyl&#39;</span>,<span class="st">&#39;hp&#39;</span>)] )</code></pre>
+<pre class="output"><code>  cyl  hp
+1   6 110
+2   6 110
+3   4  93
+4   6 110
+5   8 175
+6   6 105
 </code></pre>
 <aside class="callout panel panel-info">
 <div class="panel-heading">
@@ -181,7 +184,7 @@
 <p>Best practice is to address columns by name, often you will create or delete columns and the column position will change.</p>
 </div>
 </aside>
-<h3 id="logical-indexing">Logical Indexing</h3>
+<h3 id="logical-indexing">Logical indexing</h3>
 <p>A logical vector contains only the special values <code>TRUE</code> &amp; <code>FALSE</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>)</code></pre>
 <pre class="output"><code>[1]  TRUE  TRUE FALSE FALSE  TRUE
@@ -195,7 +198,7 @@
 </div>
 </aside>
 <p>Logical vectors can be created using <code>relational operators</code> e.g. <code>&lt;, &gt;, ==, !=, %in%</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">x&lt;-<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>)
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>)
 x &lt;<span class="st"> </span><span class="dv">10</span></code></pre>
 <pre class="output"><code>[1]  TRUE  TRUE  TRUE FALSE FALSE FALSE
 </code></pre>
@@ -203,13 +206,12 @@ x &lt;<span class="st"> </span><span class="dv">10</span></code></pre>
 <pre class="output"><code>[1]  TRUE  TRUE  TRUE FALSE FALSE FALSE
 </code></pre>
 <p>We can use logical vectors to select data from a data frame.</p>
-<pre class="sourceCode r"><code class="sourceCode r">index &lt;-<span class="st"> </span>dat$Group ==<span class="st"> &#39;Control&#39;</span>
-dat[index,]$BloodPressure</code></pre>
-<pre class="output"><code> [1] 132 173 129  77 158  81 137 111 135 108 133 139 126 125  99 122 155
-[18] 133  94  98  74 116  97 104 117  90 150 116 108 102
+<pre class="sourceCode r"><code class="sourceCode r">index &lt;-<span class="st"> </span>info$cyl ==<span class="st"> </span><span class="dv">6</span>
+info[index,]$hp</code></pre>
+<pre class="output"><code>[1] 110 110 110 105 123 123 175
 </code></pre>
 <p>Often this operation is written as one line of code:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(dat[dat$Group==<span class="st">&#39;Control&#39;</span>,]$BloodPressure)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(info[info$cyl==<span class="dv">6</span>,]$hp)</code></pre>
 <p><img src="fig/logical_vectors_indexing2-1.png" title="plot of chunk logical_vectors_indexing2" alt="plot of chunk logical_vectors_indexing2" style="display: block; margin: auto;" /></p>
 <section class="challenge panel panel-success">
 <div class="panel-heading">
@@ -235,6 +237,156 @@ x</code></pre>
 </div>
 <div class="panel-body">
 <p>In this dataset, values for Gender have been recorded as both uppercase <code>M, F</code> and lowercase <code>m,f</code>. Combine the indexing and assignment operations to convert all values to lowercase.</p>
+</div>
+</section>
+<h2 id="merging-data">Merging data</h2>
+<p>The magazine Motor Trends measured the miles-per-gallon of each of these cars. We want to merge this with our existing data frame.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mpg &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/motor-mpg.csv&quot;</span>)
+<span class="kw">head</span>(mpg)</code></pre>
+<pre class="output"><code>           make  mpg
+1      Merc 230 22.8
+2  Ferrari Dino 19.7
+3 Toyota Corona 21.5
+4     Fiat X1-9 27.3
+5       Valiant 18.1
+6      Fiat 128 32.4
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(mpg)</code></pre>
+<pre class="output"><code>[1] 30  2
+</code></pre>
+<p>Hmm. This data frame has slightly less rows, and they’re in a different order.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mpg$make %in%<span class="st"> </span>info$make</code></pre>
+<pre class="output"><code> [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+[29] TRUE TRUE
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all</span>(mpg$make %in%<span class="st"> </span>info$make)</code></pre>
+<pre class="output"><code>[1] TRUE
+</code></pre>
+<p>The <code>merge</code> function can be used to merge the two data frames:</p>
+<pre class="sourceCode r"><code class="sourceCode r">combined &lt;-<span class="st"> </span><span class="kw">merge</span>(info, mpg, <span class="dt">by=</span><span class="st">&quot;make&quot;</span>)
+<span class="kw">head</span>(combined)</code></pre>
+<pre class="output"><code>                make cyl disp  hp drat    wt  qsec vs am gear carb  mpg
+1        AMC Javelin   8  304 150 3.15 3.435 17.30  0  0    3    2 15.2
+2 Cadillac Fleetwood   8  472 205 2.93 5.250 17.98  0  0    3    4 10.4
+3         Camaro Z28   8  350 245 3.73 3.840 15.41  0  0    3    4 13.3
+4  Chrysler Imperial   8  440 230 3.23 5.345 17.42  0  0    3    4 14.7
+5         Datsun 710   4  108  93 3.85 2.320 18.61  1  1    4    1 22.8
+6   Dodge Challenger   8  318 150 2.76 3.520 16.87  0  0    3    2 15.5
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(combined)</code></pre>
+<pre class="output"><code>[1] 30 12
+</code></pre>
+<p>We see we have only 30 rows. If we want to not discard rows that can’t be merged, we can specify <code>all=TRUE</code> (or possibly <code>all.x=TRUE</code> or <code>all.y=TRUE</code>).</p>
+<pre class="sourceCode r"><code class="sourceCode r">combined_all &lt;-<span class="st"> </span><span class="kw">merge</span>(info, mpg, <span class="dt">by=</span><span class="st">&quot;make&quot;</span>, <span class="dt">all=</span><span class="ot">TRUE</span>)
+<span class="kw">dim</span>(combined_all)</code></pre>
+<pre class="output"><code>[1] 32 12
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">combined_all</code></pre>
+<pre class="output"><code>                  make cyl  disp  hp drat    wt  qsec vs am gear carb  mpg
+1          AMC Javelin   8 304.0 150 3.15 3.435 17.30  0  0    3    2 15.2
+2   Cadillac Fleetwood   8 472.0 205 2.93 5.250 17.98  0  0    3    4 10.4
+3           Camaro Z28   8 350.0 245 3.73 3.840 15.41  0  0    3    4 13.3
+4    Chrysler Imperial   8 440.0 230 3.23 5.345 17.42  0  0    3    4 14.7
+5           Datsun 710   4 108.0  93 3.85 2.320 18.61  1  1    4    1 22.8
+6     Dodge Challenger   8 318.0 150 2.76 3.520 16.87  0  0    3    2 15.5
+7           Duster 360   8 360.0 245 3.21 3.570 15.84  0  0    3    4 14.3
+8         Ferrari Dino   6 145.0 175 3.62 2.770 15.50  0  1    5    6 19.7
+9             Fiat 128   4  78.7  66 4.08 2.200 19.47  1  1    4    1 32.4
+10           Fiat X1-9   4  79.0  66 4.08 1.935 18.90  1  1    4    1 27.3
+11      Ford Pantera L   8 351.0 264 4.22 3.170 14.50  0  1    5    4 15.8
+12         Honda Civic   4  75.7  52 4.93 1.615 18.52  1  1    4    2 30.4
+13      Hornet 4 Drive   6 258.0 110 3.08 3.215 19.44  1  0    3    1 21.4
+14   Hornet Sportabout   8 360.0 175 3.15 3.440 17.02  0  0    3    2 18.7
+15 Lincoln Continental   8 460.0 215 3.00 5.424 17.82  0  0    3    4 10.4
+16        Lotus Europa   4  95.1 113 3.77 1.513 16.90  1  1    5    2 30.4
+17       Maserati Bora   8 301.0 335 3.54 3.570 14.60  0  1    5    8 15.0
+18           Mazda RX4   6 160.0 110 3.90 2.620 16.46  0  1    4    4   NA
+19       Mazda RX4 Wag   6 160.0 110 3.90 2.875 17.02  0  1    4    4 21.0
+20            Merc 230   4 140.8  95 3.92 3.150 22.90  1  0    4    2 22.8
+21           Merc 240D   4 146.7  62 3.69 3.190 20.00  1  0    4    2 24.4
+22            Merc 280   6 167.6 123 3.92 3.440 18.30  1  0    4    4 19.2
+23           Merc 280C   6 167.6 123 3.92 3.440 18.90  1  0    4    4 17.8
+24          Merc 450SE   8 275.8 180 3.07 4.070 17.40  0  0    3    3   NA
+25          Merc 450SL   8 275.8 180 3.07 3.730 17.60  0  0    3    3 17.3
+26         Merc 450SLC   8 275.8 180 3.07 3.780 18.00  0  0    3    3 15.2
+27    Pontiac Firebird   8 400.0 175 3.08 3.845 17.05  0  0    3    2 19.2
+28       Porsche 914-2   4 120.3  91 4.43 2.140 16.70  0  1    5    2 26.0
+29      Toyota Corolla   4  71.1  65 4.22 1.835 19.90  1  1    4    1 33.9
+30       Toyota Corona   4 120.1  97 3.70 2.465 20.01  1  0    3    1 21.5
+31             Valiant   6 225.0 105 2.76 3.460 20.22  1  0    3    1 18.1
+32          Volvo 142E   4 121.0 109 4.11 2.780 18.60  1  1    4    2 21.4
+</code></pre>
+<p><code>NA</code> is a special value R uses to indicate missing data.</p>
+<p>We might wish to save the combined data frame to a new CSV file.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.csv</span>(combined_all, <span class="st">&quot;combined.csv&quot;</span>, <span class="dt">row.names=</span><span class="ot">FALSE</span>)</code></pre>
+<p>We can use the plotting functions we learned about in M1 to examine this data.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre>
+<pre class="output"><code>Loading required package: methods
+
+Attaching package: &#39;ggplot2&#39;
+
+The following object is masked _by_ &#39;.GlobalEnv&#39;:
+
+    mpg
+</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(combined_all, <span class="kw">aes</span>(<span class="dt">x=</span>hp,<span class="dt">y=</span>mpg,<span class="dt">color=</span>cyl)) +<span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<pre class="output"><code>Warning: Removed 2 rows containing missing values (geom_point).
+</code></pre>
+<p><img src="fig/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" /></p>
+<h2 id="sorting-data">Sorting data</h2>
+<p>Suppose we wanted to order rows, for example by number of cylinders. The <code>sort</code> function sorts a vectors, so we could:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sort</span>(combined_all$cyl)</code></pre>
+<pre class="output"><code> [1] 4 4 4 4 4 4 4 4 4 4 4 6 6 6 6 6 6 6 8 8 8 8 8 8 8 8 8 8 8 8 8 8
+</code></pre>
+<p>However we don’t just want a sorted version of this column, we want all the columns. The <code>order</code> function gives the order required to sort a vector:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">order</span>(combined_all$cyl)</code></pre>
+<pre class="output"><code> [1]  5  9 10 12 16 20 21 28 29 30 32  8 13 18 19 22 23 31  1  2  3  4  6
+[24]  7 11 14 15 17 24 25 26 27
+</code></pre>
+<p>So we can use this to sort the data frame:</p>
+<pre class="sourceCode r"><code class="sourceCode r">combined_all[ <span class="kw">order</span>(combined_all$cyl), ]</code></pre>
+<pre class="output"><code>                  make cyl  disp  hp drat    wt  qsec vs am gear carb  mpg
+5           Datsun 710   4 108.0  93 3.85 2.320 18.61  1  1    4    1 22.8
+9             Fiat 128   4  78.7  66 4.08 2.200 19.47  1  1    4    1 32.4
+10           Fiat X1-9   4  79.0  66 4.08 1.935 18.90  1  1    4    1 27.3
+12         Honda Civic   4  75.7  52 4.93 1.615 18.52  1  1    4    2 30.4
+16        Lotus Europa   4  95.1 113 3.77 1.513 16.90  1  1    5    2 30.4
+20            Merc 230   4 140.8  95 3.92 3.150 22.90  1  0    4    2 22.8
+21           Merc 240D   4 146.7  62 3.69 3.190 20.00  1  0    4    2 24.4
+28       Porsche 914-2   4 120.3  91 4.43 2.140 16.70  0  1    5    2 26.0
+29      Toyota Corolla   4  71.1  65 4.22 1.835 19.90  1  1    4    1 33.9
+30       Toyota Corona   4 120.1  97 3.70 2.465 20.01  1  0    3    1 21.5
+32          Volvo 142E   4 121.0 109 4.11 2.780 18.60  1  1    4    2 21.4
+8         Ferrari Dino   6 145.0 175 3.62 2.770 15.50  0  1    5    6 19.7
+13      Hornet 4 Drive   6 258.0 110 3.08 3.215 19.44  1  0    3    1 21.4
+18           Mazda RX4   6 160.0 110 3.90 2.620 16.46  0  1    4    4   NA
+19       Mazda RX4 Wag   6 160.0 110 3.90 2.875 17.02  0  1    4    4 21.0
+22            Merc 280   6 167.6 123 3.92 3.440 18.30  1  0    4    4 19.2
+23           Merc 280C   6 167.6 123 3.92 3.440 18.90  1  0    4    4 17.8
+31             Valiant   6 225.0 105 2.76 3.460 20.22  1  0    3    1 18.1
+1          AMC Javelin   8 304.0 150 3.15 3.435 17.30  0  0    3    2 15.2
+2   Cadillac Fleetwood   8 472.0 205 2.93 5.250 17.98  0  0    3    4 10.4
+3           Camaro Z28   8 350.0 245 3.73 3.840 15.41  0  0    3    4 13.3
+4    Chrysler Imperial   8 440.0 230 3.23 5.345 17.42  0  0    3    4 14.7
+6     Dodge Challenger   8 318.0 150 2.76 3.520 16.87  0  0    3    2 15.5
+7           Duster 360   8 360.0 245 3.21 3.570 15.84  0  0    3    4 14.3
+11      Ford Pantera L   8 351.0 264 4.22 3.170 14.50  0  1    5    4 15.8
+14   Hornet Sportabout   8 360.0 175 3.15 3.440 17.02  0  0    3    2 18.7
+15 Lincoln Continental   8 460.0 215 3.00 5.424 17.82  0  0    3    4 10.4
+17       Maserati Bora   8 301.0 335 3.54 3.570 14.60  0  1    5    8 15.0
+24          Merc 450SE   8 275.8 180 3.07 4.070 17.40  0  0    3    3   NA
+25          Merc 450SL   8 275.8 180 3.07 3.730 17.60  0  0    3    3 17.3
+26         Merc 450SLC   8 275.8 180 3.07 3.780 18.00  0  0    3    3 15.2
+27    Pontiac Firebird   8 400.0 175 3.08 3.845 17.05  0  0    3    2 19.2
+</code></pre>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h2><span class="glyphicon glyphicon-pencil"></span>Challenge</h2>
+</div>
+<div class="panel-body">
+<p>Find the top 5 best cars in terms of miles-per-gallon. (Look at the documentation for order to see how to sort in descending order, <code>?order</code>)</p>
+<p>What does order do with missing values (NA)?</p>
 </div>
 </section>
         </div>

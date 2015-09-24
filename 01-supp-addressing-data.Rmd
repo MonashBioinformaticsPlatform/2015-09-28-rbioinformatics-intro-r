@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Programming with R
-subtitle: Addressing data
+subtitle: Addressing, merging, and sorting data
 minutes: 20
 ---
 
@@ -14,6 +14,8 @@ source('tools/chunk-options.R')
 >
 > * Understand the 3 different ways R can address data inside a data frame.
 > * Combine different methods for addressing data with the assignment operator to update subsets of data
+> * Merge two data frames using a shared column
+> * Sort a data frame
 
 R is a powerful language for data manipulation. There are 3 main ways for addressing data inside R objects.
 
@@ -24,51 +26,54 @@ R is a powerful language for data manipulation. There are 3 main ways for addres
 Lets start by loading some sample data:
 
 ```{r readData}
-dat<-read.csv(file='data/sample.csv',header=TRUE, stringsAsFactors=FALSE)
+info <- read.csv(file="data/motor-info.csv")
 ```
-
-> ## Tip {.callout} 
->
-> The first row of this csv file is a list of column names. We used the *header=TRUE* argument to `read.csv` so that R can interpret the file correctly.
-> We are using the *stringsAsFactors=FALSE* argument to override the default behaviour for R. Using factors in R is covered in a separate lesson.
 
 Lets take a look at this data.
 
 ```{r classDat}
-class(dat)
+class(info)
 ```
 
-R has loaded the contents of the .csv file into a variable called `dat` which is a `data frame`.
+R has loaded the contents of the .csv file into a variable called `info` which is a `data frame`.
 
 ```{r dimDat}
-dim(dat)
+dim(info)
+nrow(info)
+ncol(info)
 ```
 
-The data has 100 rows and 9 columns.
+The data has 32 rows and 11 columns.
 
 ```{r headDat}
-head(dat)
+head(info)
 ```
 
-The data is the results of an (not real) experiment, looking at the number of aneurisms that formed in the eyes of patients who undertook 3 different treatments.
+The `str` function gives a nice summary:
+
+```{r}
+str(info)
+```
+
+The data are features of different makes of cars. (This is actually a standard R example data set called mtcars.)
 
 ### Addressing by Index
 
-Data can be accessed by index. We have already seen how square brackets `[` can be used to subset (slice) data. The generic format is `dat[row_numbers,column_numbers]`.
+Data can be accessed by index. We have already seen how square brackets `[` can be used to subset (slice) data. The generic format is `info[row_numbers,column_numbers]`.
 
 > ## Challenge - Selecting values 1 {.challenge}
 >
-> What will be returned by `dat[1,1]`?
+> What will be returned by `info[1,1]`?
 
 ```{r indexing1}
-dat[1,1]
+info[1,1]
 ```
 
 If we leave out a dimension R will interpret this as a request for all values in that dimension.
 
 > ## Challenge - Selecting values 2 {.challenge}
 >
-> What will be returned by `dat[,2]`?
+> What will be returned by `info[,2]`?
 
 The colon `:` can be used to create a sequence of integers.
 
@@ -78,7 +83,7 @@ The colon `:` can be used to create a sequence of integers.
 
 Creates a vector of numbers from 6 to 9.
 
-This can be very useful for addressing data. 
+This can be very useful for addressing data.
 
 > ## Challenge - Subsetting with sequences {.challenge}
 > Use the colon operator to index just the aneurism count data (columns 6 to 9).
@@ -86,56 +91,56 @@ This can be very useful for addressing data.
 Finally we can use the `c()` (combine) function to address non-sequential rows and columns.
 
 ```{r nonsequential_indexing}
-dat[c(1,5,7,9),1:5]
+info[c(1,5,7,9),1:5]
 ```
 
-Returns the first 5 columns for patients in rows 1,5,7 & 9
+Returns the first 5 columns for cars in rows 1,5,7 & 9
 
 > ## Challenge - Subsetting non-sequential data {.challenge}
 > Return the Age and Gender values for the first 5 patients.
 
-### Addressing by Name
+### Addressing by column name
 
 Columns in an R data frame are named.
 
 ```{r column_names}
-names(dat)
+colnames(info)
 ```
 
-> ## Tip {.callout} 
+> ## Tip {.callout}
 >
 > If names are not specified e.g. using `headers=FALSE` in a `read.csv()` function, R assigns default names `V1,V2,...,Vn`
 
 We usually use the `$` operator to address a column by name
 
 ```{r named_addressing}
-dat$Gender
+info$cyl
 ```
 
 Named addressing can also be used in square brackets.
 ```{r names_addressing_2}
-head(dat[,c('Age','Gender')])
+head( info[,c('cyl','hp')] )
 ```
 
-> ## Best Practice {.callout} 
+> ## Best Practice {.callout}
 >
 > Best practice is to address columns by name, often you will create or delete columns and the column position will change.
 
-### Logical Indexing
+### Logical indexing
 
 A logical vector contains only the special values `TRUE` & `FALSE`.
 
 ```{r logical_vectors}
 c(TRUE,TRUE,FALSE,FALSE,TRUE)
 ```
-> ## Tip {.callout} 
+> ## Tip {.callout}
 >
 > Note the values `TRUE` and `FALSE` are all capital letters and are not quoted.
 
 Logical vectors can be created using `relational operators` e.g. `<, >, ==, !=, %in%`.
 
 ```{r logical_vectors_example}
-x<-c(1,2,3,11,12,13)
+x <- c(1,2,3,11,12,13)
 x < 10
 
 x %in% 1:10
@@ -144,14 +149,14 @@ x %in% 1:10
 We can use logical vectors to select data from a data frame.
 
 ```{r logical_vectors_indexing}
-index <- dat$Group == 'Control'
-dat[index,]$BloodPressure
+index <- info$cyl == 6
+info[index,]$hp
 ```
 
 Often this operation is written as one line of code:
 
 ```{r logical_vectors_indexing2}
-plot(dat[dat$Group=='Control',]$BloodPressure)
+plot(info[info$cyl==6,]$hp)
 ```
 
 > ## Challenge - Using logical indexes {.challenge}
@@ -169,5 +174,83 @@ x
 ```
 
 > ## Challenge - Updating a subset of values {.challenge}
-> In this dataset, values for Gender have been recorded as both uppercase `M, F` and lowercase `m,f`. 
+> In this dataset, values for Gender have been recorded as both uppercase `M, F` and lowercase `m,f`.
 > Combine the indexing and assignment operations to convert all values to lowercase.
+
+
+
+## Merging data
+
+The magazine Motor Trends measured the miles-per-gallon of each of these cars. We want to merge this with our existing data frame.
+
+```{r}
+mpg <- read.csv("data/motor-mpg.csv")
+head(mpg)
+dim(mpg)
+```
+
+Hmm. This data frame has slightly less rows, and they're in a different order.
+
+```{r}
+mpg$make %in% info$make
+all(mpg$make %in% info$make)
+```
+
+The `merge` function can be used to merge the two data frames:
+
+```{r}
+combined <- merge(info, mpg, by="make")
+head(combined)
+dim(combined)
+```
+
+We see we have only 30 rows. If we want to not discard rows that can't be merged, we can specify `all=TRUE` (or possibly `all.x=TRUE` or `all.y=TRUE`).
+
+```{r}
+combined_all <- merge(info, mpg, by="make", all=TRUE)
+dim(combined_all)
+combined_all
+```
+
+`NA` is a special value R uses to indicate missing data.
+
+We might wish to save the combined data frame to a new CSV file.
+
+```{r, eval=FALSE}
+write.csv(combined_all, "combined.csv", row.names=FALSE)
+```
+
+We can use the plotting functions we learned about in M1 to examine this data.
+
+```{r}
+library(ggplot2)
+ggplot(combined_all, aes(x=hp,y=mpg,color=cyl)) + geom_point()
+```
+
+## Sorting data
+
+Suppose we wanted to order rows, for example by number of cylinders. The `sort` function sorts a vectors, so we could:
+
+```{r}
+sort(combined_all$cyl)
+```
+
+However we don't just want a sorted version of this column, we want all the columns. The `order` function gives the order required to sort a vector:
+
+```{r}
+order(combined_all$cyl)
+```
+
+So we can use this to sort the data frame:
+
+```{r}
+combined_all[ order(combined_all$cyl), ]
+```
+
+> ## Challenge {.challenge}
+>
+> Find the top 5 best cars in terms of miles-per-gallon.
+> (Look at the documentation for order to see how to sort in descending order, `?order`)
+>
+> What does order do with missing values (NA)?
+>

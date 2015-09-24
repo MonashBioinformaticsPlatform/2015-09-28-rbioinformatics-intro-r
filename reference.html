@@ -39,9 +39,11 @@
 <li>Use <code>x &lt;- 3</code> to assign a value, <code>3</code>, to a variable, <code>x</code></li>
 <li>R counts from 1, unlike many other programming languages (e.g., Python)</li>
 <li><code>c(value1, value2, value3)</code> creates a vector</li>
-<li><code>length(vec)</code> returns the number of elements contained in the variable <code>vec</code>, if it is a vector.</li>
-<li><code>vec[i]</code> selects the i’th element from the variable <code>vec</code>, if it is a vector.</li>
-<li><p><code>mat[i,j]</code> selects the cell at the i’th row and j’th column of <code>mat</code>, if <code>mat</code> is a matrix or data frame.</p></li>
+<li><code>length(myvec)</code> returns the number of elements contained in the variable <code>myvec</code>, if it is a vector.</li>
+<li><code>nrow(mymat)</code> and <code>ncol(mymat)</code> give the number of rows or columns in a matrix or data frame.</li>
+<li><code>myvec[i]</code> selects the i’th element from the variable <code>myvec</code>, if it is a vector.</li>
+<li><code>mymat[i,j]</code> selects the cell at the i’th row and j’th column of <code>mymat</code>, if <code>mymat</code> is a matrix or data frame.</li>
+<li><p><code>mylist$thing</code> if <code>mylist</code> is a list selects the element named “thing” in the list. Also works for columns of data frames.</p></li>
 <li><code>print(thing)</code> print the variable <code>thing</code> to the console.</li>
 <li><p><code>cat(thing1, thing2, &quot;\n&quot;)</code> another more flexible way to print things. <code>&quot;\n&quot;</code> is the “newline” character, it means start a new line of output.</p></li>
 <li><p><code>?name</code> get help on the function called <code>name</code></p></li>
@@ -55,7 +57,10 @@
 <li><p>“list” - A list of things. Unlike vectors, lists can contain different types of things, and can contain other container data structures. If a function needs to return several different things of different types, a list is a great container to put them all in.</p></li>
 <li><p>“data.frame” - Another tabular 2D data structure. A sequence of records (rows), each having certain attributes (columns). Each column is all the same type of thing, but different columns can contain different types of thing. You could think of a data.frame as a <em>list</em> of column <em>vectors</em>.</p></li>
 </ul>
-<p>Insist that a thing have a certain type: <code>as.vector(x)</code> <code>as.matrix(x)</code> <code>as.data.frame(x)</code></p>
+<p>For more information on the <em>structure</em> of a thing: <code>str(x)</code></p>
+<p>To insist that a thing have a certain type: <code>as.vector(x)</code> <code>as.matrix(x)</code> <code>as.data.frame(x)</code> <code>as.numeric(x)</code> <code>as.character(x)</code></p>
+<p>Lists (and vectors) may have names for elements: <code>names(mylist)</code></p>
+<p>Matrices and data frames may have row names and column names: <code>rownames(mymat)</code> <code>colnames(mymat)</code></p>
 <h2 id="control-flow">Control Flow</h2>
 <ul>
 <li><p>create a <code>for</code> loop to process elements in a collection one at a time</p>
@@ -174,7 +179,7 @@
 <dd>A statement that causes a function to stop executing and return a value to its caller immediately.
 </dd>
 <dt><span id="shape-(of-an-array)">shape (of an array)</span></dt>
-<dd>An array’s dimensions, represented as a vector. For example, a 5×3 array’s shape is <code>(5,3)</code>. In R we get the shape of a matrix or data frame with <code>dim</code>, and the length of a vector with <code>length</code>.
+<dd>An array’s dimensions, represented as a vector. For example, a 5×3 array’s shape is <code>(5,3)</code>. In R we get the shape of a matrix or data frame with <code>dim</code>, or <code>nrow</code> and <code>ncol</code>, and the length of a vector with <code>length</code>.
 </dd>
 <dt><span id="silent-failure">silent failure</span></dt>
 <dd>Failing without producing any warning messages. Silent failures are hard to detect and debug.

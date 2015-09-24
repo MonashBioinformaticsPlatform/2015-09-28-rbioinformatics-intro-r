@@ -10,10 +10,12 @@ subtitle: Reference
 - Use `x <- 3` to assign a value, `3`,  to a variable, `x`
 - R counts from 1, unlike many other programming languages (e.g., Python)
 - `c(value1, value2, value3)` creates a vector
-- `length(vec)` returns the number of elements contained in the variable
-  `vec`, if it is a vector.
-- `vec[i]` selects the i'th element from the variable `vec`, if it is a vector.
-- `mat[i,j]` selects the cell at the i'th row and j'th column of `mat`, if `mat` is a matrix or data frame.
+- `length(myvec)` returns the number of elements contained in the variable
+  `myvec`, if it is a vector.
+- `nrow(mymat)` and `ncol(mymat)` give the number of rows or columns in a matrix or data frame.
+- `myvec[i]` selects the i'th element from the variable `myvec`, if it is a vector.
+- `mymat[i,j]` selects the cell at the i'th row and j'th column of `mymat`, if `mymat` is a matrix or data frame.
+- `mylist$thing` if `mylist` is a list selects the element named "thing" in the list. Also works for columns of data frames.
 
 - `print(thing)` print the variable `thing` to the console.
 - `cat(thing1, thing2, "\n")` another more flexible way to print things. `"\n"` is the "newline" character, it means start a new line of output.
@@ -36,10 +38,21 @@ Check what type of thing you are dealing with:
 
 - "data.frame" - Another tabular 2D data structure. A sequence of records (rows), each having certain attributes (columns). Each column is all the same type of thing, but different columns can contain different types of thing. You could think of a data.frame as a *list* of column *vectors*.
 
-Insist that a thing have a certain type:
+For more information on the *structure* of a thing:
+`str(x)`
+
+To insist that a thing have a certain type:
 `as.vector(x)`
 `as.matrix(x)`
 `as.data.frame(x)`
+`as.numeric(x)`
+`as.character(x)`
+
+Lists (and vectors) may have names for elements: `names(mylist)`
+
+Matrices and data frames may have row names and column names:
+`rownames(mymat)`
+`colnames(mymat)`
 
 
 ## Control Flow
@@ -186,7 +199,7 @@ return statement
 :   A statement that causes a function to stop executing and return a value to its caller immediately.
 
 shape (of an array)
-:   An array's dimensions, represented as a vector. For example, a 5&times;3 array's shape is `(5,3)`. In R we get the shape of a matrix or data frame with `dim`, and the length of a vector with `length`.
+:   An array's dimensions, represented as a vector. For example, a 5&times;3 array's shape is `(5,3)`. In R we get the shape of a matrix or data frame with `dim`, or `nrow` and `ncol`, and the length of a vector with `length`.
 
 silent failure
 :   Failing without producing any warning messages. Silent failures are hard to detect and debug.

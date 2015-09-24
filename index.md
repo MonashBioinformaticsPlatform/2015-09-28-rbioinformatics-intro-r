@@ -60,6 +60,6 @@ M1. [Introducing R, analyzing data](M1-start.html)
 ## Supplemental lessons
 
 *   [Introduction to RStudio](01-supp-intro-rstudio.html)
-*   [Addressing data](01-supp-addressing-data.html)
+*   [Addressing, merging, and sorting data](01-supp-addressing-data.html)
 *   [Understanding factors](01-supp-factors.html)
 *   [Data types and structures](01-supp-data-structures.html)
