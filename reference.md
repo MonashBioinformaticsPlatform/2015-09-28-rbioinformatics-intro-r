@@ -145,7 +145,6 @@ Matrices and data frames may have row names and column names:
 
     `Rscript filename.R`
 
-
 ## Packages
 - Install package by using `install.packages("package-name")`
 - Update packages by using `update.packages("package-name")`
@@ -235,6 +234,11 @@ Stackoverflow-style sites are great for getting help:
 - [biostars.org](https://biostars.org) for general bioinformatics questions.
 - [stats.stackexchange.com](http://stats.stackexchange.com) for statistics questions.
 - [stackoverflow.com](http://stackoverflow.com) for general programming questions.
+
+Online tutorials:
+
+- [Try R](http://tryr.codeschool.com)
+- [UCLA slides introducing R in greater depth](http://www.ats.ucla.edu/stat/r/seminars/intro.htm)
 
 Books:
 
