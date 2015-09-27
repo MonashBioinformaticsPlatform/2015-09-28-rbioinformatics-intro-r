@@ -213,17 +213,6 @@ info[index,]$hp</code></pre>
 <p>Often this operation is written as one line of code:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(info[info$cyl==<span class="dv">6</span>,]$hp)</code></pre>
 <p><img src="fig/logical_vectors_indexing2-1.png" title="plot of chunk logical_vectors_indexing2" alt="plot of chunk logical_vectors_indexing2" style="display: block; margin: auto;" /></p>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Using logical indexes</h2>
-</div>
-<div class="panel-body">
-<ol style="list-style-type: decimal">
-<li>Create a scatterplot showing BloodPressure for subjects not in the control group.</li>
-<li>How many ways are there to index this set of subjects?</li>
-</ol>
-</div>
-</section>
 <h3 id="combining-indexing-and-assignment">Combining Indexing and Assignment</h3>
 <p>The assignment operator <code>&lt;-</code> can be combined with indexing.</p>
 <pre class="sourceCode r"><code class="sourceCode r">x&lt;-<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>)
@@ -231,14 +220,6 @@ x[x &lt;<span class="st"> </span><span class="dv">10</span>] &lt;-<span class="s
 x</code></pre>
 <pre class="output"><code>[1]  0  0  0 11 12 13
 </code></pre>
-<section class="challenge panel panel-success">
-<div class="panel-heading">
-<h2><span class="glyphicon glyphicon-pencil"></span>Challenge - Updating a subset of values</h2>
-</div>
-<div class="panel-body">
-<p>In this dataset, values for Gender have been recorded as both uppercase <code>M, F</code> and lowercase <code>m,f</code>. Combine the indexing and assignment operations to convert all values to lowercase.</p>
-</div>
-</section>
 <h2 id="merging-data">Merging data</h2>
 <p>The magazine Motor Trends measured the miles-per-gallon of each of these cars. We want to merge this with our existing data frame.</p>
 <pre class="sourceCode r"><code class="sourceCode r">mpg &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/motor-mpg.csv&quot;</span>)

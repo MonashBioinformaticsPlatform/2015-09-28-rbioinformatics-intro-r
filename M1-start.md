@@ -434,13 +434,17 @@ An index like `[4, 2]` selects a single element of a data frame, but we can sele
 
 
 ~~~{.r}
-mat[1:2, 1:4]
+mat[1:4, 1:2]
 ~~~
 
 
 
 ~~~{.output}
-Error in mat[1:2, 1:4]: subscript out of bounds
+       Alice   Bob
+Resin1 36.25 35.40
+Resin2 35.15 35.35
+Resin3 30.70 29.65
+Resin4 29.70 30.05
 
 ~~~
 
@@ -513,7 +517,7 @@ Resin1 Resin2 Resin3 Resin4 Resin5 Resin6 Resin7 Resin8
 
 ~~~
 
-Now let's perform some common mathematical operations to learn about our inflammation data. When analyzing data we often want to look at partial statistics, such as the maximum value per resin or the average value per operator. One way to do this is to select the data we want to create a new temporary vector (or matrix, or data frame), and then perform the calculation on this subset:
+Now let's perform some common mathematical operations to learn about our data. When analyzing data we often want to look at partial statistics, such as the maximum value per resin or the average value per operator. One way to do this is to select the data we want to create a new temporary vector (or matrix, or data frame), and then perform the calculation on this subset:
 
 
 ~~~{.r}

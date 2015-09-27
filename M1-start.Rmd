@@ -230,7 +230,7 @@ mat["Resin4","Bob"]
 An index like `[4, 2]` selects a single element of a data frame, but we can select whole sections as well. For example, we can select the first two operators (columns) of values for the first four resins (rows) like this:
 
 ```{r}
-mat[1:2, 1:4]
+mat[1:4, 1:2]
 ```
 
 The [slice](reference.html#slice) `1:4` means, "Start at index 1 and go to index 4." It's the same as `c(1,2,3,4)`.
@@ -257,7 +257,7 @@ mat[5, ]
 mat[, 2]
 ```
 
-Now let's perform some common mathematical operations to learn about our inflammation data. When analyzing data we often want to look at partial statistics, such as the maximum value per resin or the average value per operator. One way to do this is to select the data we want to create a new temporary vector (or matrix, or data frame), and then perform the calculation on this subset:
+Now let's perform some common mathematical operations to learn about our data. When analyzing data we often want to look at partial statistics, such as the maximum value per resin or the average value per operator. One way to do this is to select the data we want to create a new temporary vector (or matrix, or data frame), and then perform the calculation on this subset:
 
 ```{r}
 # first row, all of the columns

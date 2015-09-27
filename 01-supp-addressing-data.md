@@ -329,9 +329,6 @@ plot(info[info$cyl==6,]$hp)
 
 <img src="fig/logical_vectors_indexing2-1.png" title="plot of chunk logical_vectors_indexing2" alt="plot of chunk logical_vectors_indexing2" style="display: block; margin: auto;" />
 
-> ## Challenge - Using logical indexes {.challenge}
-> 1. Create a scatterplot showing BloodPressure for subjects not in the control group.
-> 2. How many ways are there to index this set of subjects?
 
 ### Combining Indexing and Assignment
 
@@ -350,11 +347,6 @@ x
 [1]  0  0  0 11 12 13
 
 ~~~
-
-> ## Challenge - Updating a subset of values {.challenge}
-> In this dataset, values for Gender have been recorded as both uppercase `M, F` and lowercase `m,f`.
-> Combine the indexing and assignment operations to convert all values to lowercase.
-
 
 
 ## Merging data
